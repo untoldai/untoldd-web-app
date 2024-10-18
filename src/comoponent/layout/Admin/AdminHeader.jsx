@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaAlignJustify, FaBell, FaEnvelope, FaTimes, FaUser, FaUserCircle, FaUserEdit } from 'react-icons/fa'
 import { UntloddLogo } from '../../../assets'
-import { Link } from 'react-router-dom';
-import { CiSettings } from "react-icons/ci";
+import { Link, useNavigate } from 'react-router-dom';
+import { CiLogout, CiSettings } from "react-icons/ci";
 import { SidebarContext } from '../../../context/SidebarContext';
+import { removeAdminToken } from '../../../utils/tokenStorage';
 const AdminHeader = () => {
     const [time, setTime] = useState(new Date());
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { toggle, isToggle } = useContext(SidebarContext);
+    const navigate=useNavigate();
     useEffect(() => {
         const timerId = setInterval(() => {
             setTime(new Date());
@@ -15,6 +17,10 @@ const AdminHeader = () => {
 
         return () => clearInterval(timerId);
     }, []);
+    const handleLogout=()=>{
+        removeAdminToken();
+        navigate('/auth/admin-login')
+    }
     return (
         <div className='fixed top-0 z-50 h-14 py-2 px-3 md:px-10 bg-white  shadow-lg w-full flex  items-center  justify-between '>
             <div className='flex items-center '>
@@ -62,9 +68,9 @@ const AdminHeader = () => {
                                 <Link to={'/admin/setting'} className='flex text-sky-900 font-bold cursor-pointer items-center gap-2 text-xl'>
                                     <CiSettings /> Setting
                                 </Link>
-                                <Link to={'/admin/setting'} className='flex text-sky-900 font-bold cursor-pointer items-center gap-2 text-xl'>
-                                    <CiSettings /> Setting
-                                </Link>
+                                <button  onClick={handleLogout} className='flex text-sky-900 font-bold cursor-pointer items-center gap-2 text-xl'>
+                                    <CiLogout /> Logout
+                                </button>
                             </li>
                         </ul>
                     </div>

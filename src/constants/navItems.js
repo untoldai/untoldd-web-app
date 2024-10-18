@@ -1,4 +1,4 @@
-import { FaTachometerAlt, FaPlus, FaBox, FaUser, FaCog, FaSignOutAlt, FaUsers, FaStore, FaStar, FaChartLine, FaClipboardList, FaTag, FaComments, FaCalendarAlt } from 'react-icons/fa';
+import { FaTachometerAlt, FaPlus, FaBox, FaUser, FaCog, FaEdit, FaUsers, FaStore, FaStar, FaChartLine, FaClipboardList, FaTag, FaComments, FaCalendarAlt } from 'react-icons/fa';
 
 export const navItems = [
   {
@@ -31,7 +31,7 @@ export const navItems = [
     title: 'Setting',
     icon: FaCog
   },
- 
+
   // Additional items for different customer types
   {
     id: 6,
@@ -83,120 +83,133 @@ export const navItems = [
     roles: ['admin', 'vendor']
   },
   {
+    id: 14,
+    slug: '/admin/blog',
+    title: 'Blog',
+    icon: FaEdit,
+    roles: ['admin', 'vendor', 'influencer']
+  },
+  {
     id: 13,
     slug: '/admin/calendar',
     title: 'Calendar',
     icon: FaCalendarAlt,
     roles: ['admin', 'vendor', 'influencer']
   },
+
 ];
 
 
-export const footerItem=[
+export const footerItem = [
   {
-    id:0,
-    title:"FAQ",
-    links:[
+    id: 0,
+    title: "FAQ",
+    links: [
       {
-        id:0,
-        name:"PRIVACY POLICY",
-        slug:"#",
+        id: 0,
+        name: "PRIVACY POLICY",
+        slug: "#",
       },
       {
-        id:1,
-        name:"DISCLAMER",
-        slug:"#",
+        id: 1,
+        name: "DISCLAMER",
+        slug: "#",
       },
       {
-        id:2,
-        name:"TERMS AND SERVICE",
-        slug:"#",
+        id: 2,
+        name: "TERMS AND SERVICE",
+        slug: "#",
       },
+      {
+        id: 3,
+        name: "About Us",
+        slug: "/about-us"
+      }
     ]
   },
   {
-    id:0,
-    title:"CONTACT",
-    links:[
+    id: 0,
+    title: "CONTACT",
+    links: [
       {
-        id:0,
-        name:"EMAIL",
-        slug:"#",
+        id: 0,
+        name: "EMAIL",
+        slug: "#",
       },
       {
-        id:1,
-        name:"PHONENO",
-        slug:"#",
+        id: 1,
+        name: "PHONENO",
+        slug: "#",
       },
-     
+
     ]
   },
   {
-    id:0,
-    title:"FAQ",
-    links:[
+    id: 0,
+    title: "FAQ",
+    links: [
       {
-        id:0,
-        name:"INSTAGRAM",
-        slug:"#",
+        id: 0,
+        name: "INSTAGRAM",
+        slug: "#",
       },
       {
-        id:1,
-        name:"FACEBOOK",
-        slug:"#",
+        id: 1,
+        name: "FACEBOOK",
+        slug: "#",
       },
       {
-        id:2,
-        name:"TWITTER",
-        slug:"#",
+        id: 2,
+        name: "TWITTER",
+        slug: "#",
       },
       {
-        id:3,
-        name:"LINKEDIN",
-        slug:"#",
+        id: 3,
+        name: "LINKEDIN",
+        slug: "#",
       },
     ]
   }
 ]
 
-export  const kidsWearNavItems=[
+export const kidsWearNavItems = [
   {
-    id:0,
-    title:"All products",
-    slug:"/kids-wear/all-products"
+    id: 0,
+    title: "All products",
+    slug: "/kids-wear/all-products"
   },
   {
-    id:1,
-    title:"Boy's Clothing",
-    slug:"/kids-wear/boys-clothing"
+    id: 1,
+    title: "Boy's Clothing",
+    slug: "/kids-wear/boys-clothing"
   },
   {
-    id:2,
-    title:"Girls Clothing",
-    slug:"/kids-wear/girls-clothing"
+    id: 2,
+    title: "Girls Clothing",
+    slug: "/kids-wear/girls-clothing"
   },
   {
-    id:3,
-    title:"About Us",
-    slug:"/kids-wear/about-us"
+    id: 3,
+    title: "About Us",
+    slug: "/kids-wear/about-us"
   },
   {
-    id:4,
-    title:"Contact us",
-    slug:"/kids-wear/contact-us"
+    id: 4,
+    title: "Contact us",
+    slug: "/kids-wear/contact-us"
   }
 ]
 
-export  const beautyNavItems=[
+export const beautyNavItems = [
   {
-    id:0,
-    title:"All products",
-    slug:"/beauty/all-products"
+    id: 0,
+    title: "All products",
+    slug: "/beauty/all-products"
   },
   {
-    id:1,
-    title:"Perfume",
-    slug:"/beauty/perfume"
+    id: 1,
+    title: "Perfume",
+    slug: "/beauty/perfume"
   },
   // {
   //   id:2,
@@ -204,13 +217,13 @@ export  const beautyNavItems=[
   //   slug:"/kids-wear/girls-clothing"
   // },
   {
-    id:3,
-    title:"About Us",
-    slug:"/beauty/about-us"
+    id: 3,
+    title: "About Us",
+    slug: "/beauty/about-us"
   },
   {
-    id:4,
-    title:"Contact us",
-    slug:"/beauty/contact-us"
+    id: 4,
+    title: "Contact us",
+    slug: "/beauty/contact-us"
   }
 ]

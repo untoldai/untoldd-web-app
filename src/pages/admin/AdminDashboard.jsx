@@ -23,7 +23,7 @@ const fadeIn = {
   visible: { opacity: 1 },
 };
 
-export const AdminDashboard = () => {
+const AdminDashboard = () => {
   const { isToggle } = useContext(SidebarContext);
 
   // Sample data for charts
@@ -116,3 +116,4 @@ export const AdminDashboard = () => {
     </div>
   );
 };
+export default AdminDashboard

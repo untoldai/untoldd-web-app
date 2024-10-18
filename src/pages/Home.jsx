@@ -307,7 +307,7 @@ const Home = () => {
             <InputWithLabel type='email' placeholder={'@example.com'} inputClassName={'bg-black text-black  rounded-2xl my-4 py-3 text-xl shadow-lg  '} />
             <InputWithLabel type='number' placeholder={'+9199339383'} inputClassName={'bg-black text-black  rounded-2xl my-4 py-3 text-xl shadow-lg  '} />
             <InputWithLabel type='text' placeholder={'Message'} inputClassName={'bg-black text-black  rounded-2xl my-4 py-3 text-xl shadow-lg  '} />
-            <InputWithLabel type='button' value={'Submit'} inputClassName={'!bg-black text-black  rounded-2xl my-4 py-3 text-xl shadow-lg  '} />
+            <InputWithLabel type='button' value={'Submit'} inputClassName={'!bg-black text-white  rounded-2xl my-4 py-3 text-xl shadow-lg  '} />
           </div>
           <img src={Contactus} alt="" />
         </div>
@@ -320,17 +320,17 @@ const Home = () => {
 
         <div className='w-full md:w-1/4 my-5 flex justify-center items-center gap-3'>
           <Link to={'#'}>
-            <img src={TwitterICon} alt="" className='w-4/5' />
+            <img src={TwitterICon} alt="" className='w-4/5 h-10' />
 
           </Link>
           <Link to={'#'}>
 
-            <img src={InstagramIcon} alt="" className='w-4/5' />
+            <img src={InstagramIcon} alt="" className='w-4/5 h-10' />
 
           </Link>
           <Link to={'#'}>
 
-            <img src={LinkedinIcon} alt="" className='w-4/5' />
+            <img src={LinkedinIcon} alt="" className='w-4/5 h-10' />
           </Link>
         </div>
       </section>

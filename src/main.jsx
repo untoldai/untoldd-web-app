@@ -1,14 +1,17 @@
-import { StrictMode } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux"
 import App from './App.jsx'
 import './index.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AdminLogin from './pages/auth/AdminLogin.jsx';
 import AdminLayout from './comoponent/layout/Admin/AdminLayout.jsx';
-import { AdminDashboard } from './pages/admin/AdminDashboard.jsx';
-import AddProduct from './pages/admin/AddProduct.jsx';
-import Productlist from './pages/admin/productlist.jsx';
-import Profile from './pages/admin/Profile.jsx';
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard.jsx'));
+const AddProduct = lazy(() => import('./pages/admin/AddProduct.jsx'));
+const Productlist = lazy(() => import('./pages/admin/productlist.jsx'));
+const Profile = lazy(() => import('./pages/admin/Profile.jsx'));
 import AdminSetting from './pages/admin/AdminSetting.jsx';
 import Customer from './pages/admin/Customer.jsx';
 import VendorLists from './pages/admin/VendorLists.jsx';
@@ -31,11 +34,20 @@ import KidsWearAllProducts from './pages/kidsware/KidsWearProducts.jsx';
 import BoyKidsWearAllProducts from './pages/kidsware/BoyKidsWearProducts.jsx';
 import GirlKidsWearAllProducts from './pages/kidsware/GirlsKidsWearProducts.jsx';
 import KidsWearCart from './pages/kidsware/KidsWareCart.jsx';
+import store from './redux/store.js';
+import DefaultSkeltion from './comoponent/skelton/DefaultSkeltion.jsx';
+import AdminAuthLayout from './comoponent/layout/Admin/AdminAuthLayout.jsx';
+import AboutUs from './pages/AboutUs.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />
+  },
+  {
+    path: "/about-us",
+    element: <AboutUs />
+
   },
   {
     path: "/explore-products",
@@ -76,28 +88,28 @@ const router = createBrowserRouter([
         element: <KidsWareHomepage />
       },
       {
-        path:"/kids-wear/about-us",
-        element:<BeautyAboutUs />
+        path: "/kids-wear/about-us",
+        element: <BeautyAboutUs />
       },
       {
-        path:"/kids-wear/contact-us",
-        element:<BeautyContactUs />
+        path: "/kids-wear/contact-us",
+        element: <BeautyContactUs />
       },
       {
-        path:"/kids-wear/all-products",
-        element:<KidsWearAllProducts/>
+        path: "/kids-wear/all-products",
+        element: <KidsWearAllProducts />
       },
       {
-        path:"/kids-wear/boys-clothing",
-        element:<BoyKidsWearAllProducts />
+        path: "/kids-wear/boys-clothing",
+        element: <BoyKidsWearAllProducts />
       },
       {
-        path:"/kids-wear/girls-clothing",
-        element:<GirlKidsWearAllProducts />
+        path: "/kids-wear/girls-clothing",
+        element: <GirlKidsWearAllProducts />
       },
       {
-        path:"/kids-wear/cart",
-        element:<KidsWearCart />
+        path: "/kids-wear/cart",
+        element: <KidsWearCart />
       }
     ]
   },
@@ -110,7 +122,7 @@ const router = createBrowserRouter([
         path: "/beauty",
         element: <BeautyHomepage />
       },
-     
+
     ]
   },
   {
@@ -119,18 +131,37 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/admin/dashboard",
-        element: <AdminDashboard />
-      }, {
+        element: (<Suspense fallback={<DefaultSkeltion />}>
+          <AdminAuthLayout slug="/admin/dashboard">
+            <AdminDashboard />
+          </AdminAuthLayout>
+        </Suspense>)
+      },
+      {
         path: '/admin/add-product',
-        element: <AddProduct />
+        element: (<Suspense fallback={<DefaultSkeltion />}>
+          <AdminAuthLayout slug="/admin/add-product">
+            <AddProduct />
+          </AdminAuthLayout>
+        </Suspense>)
       },
       {
         path: "/admin/products",
-        element: <Productlist />
+        element:
+          (<Suspense fallback={<DefaultSkeltion />}>
+            <AdminAuthLayout slug="/admin/products">
+              <Productlist />
+            </AdminAuthLayout>
+          </Suspense>)
+
       },
       {
         path: "/admin/profile",
-        element: <Profile />
+        element: (<Suspense fallback={<DefaultSkeltion />}>
+          <AdminAuthLayout slug="/admin/profile">
+            <Profile />
+          </AdminAuthLayout>
+        </Suspense>)
       },
       {
         path: "/admin/setting",
@@ -162,6 +193,19 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right" // You can change this to any position
+        autoClose={5000} // Auto close after 5 seconds
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </Provider>
   </StrictMode>,
 )

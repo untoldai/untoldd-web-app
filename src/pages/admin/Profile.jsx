@@ -1,6 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getAdminProfileDetailsService } from '../../service/admin/admin.service';
 
 const Profile = () => {
+    const [profileDetails, setProfileDetails] = useState(null);
+    async function getProfileDetails() {
+        try {
+            const response = await getAdminProfileDetailsService();
+
+            if (response.data && response.data.statusCode === 200) {
+                setProfileDetails(response.data.data);
+                return;
+            };
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+    }
+    useEffect(() => {
+        getProfileDetails();
+    }, [])
     return (
         <div>
             <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -12,7 +31,7 @@ const Profile = () => {
                             className="w-24 h-24 rounded-full object-cover"
                         />
                         <div>
-                            <h1 className="text-2xl font-semibold text-gray-800">John Doe</h1>
+                            <h1 className="text-2xl font-semibold text-gray-800">{profileDetails && profileDetails.personal_details.first_name + profileDetails.personal_details.last_name}</h1>
                             <p className="text-gray-600">Admin</p>
                         </div>
                     </div>
@@ -23,16 +42,16 @@ const Profile = () => {
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-gray-700">Email Address</label>
-                                    <p className="text-gray-900">johndoe@example.com</p>
+                                    <p className="text-gray-900">{profileDetails && profileDetails?.contact.email}</p>
                                 </div>
                                 <div>
                                     <label className="block text-gray-700">Phone Number</label>
-                                    <p className="text-gray-900">(123) 456-7890</p>
+                                    <p className="text-gray-900">{profileDetails && profileDetails?.contact.phone}</p>
                                 </div>
-                                <div>
+                                {/* <div>
                                     <label className="block text-gray-700">Address</label>
                                     <p className="text-gray-900">1234 Elm Street, Springfield, IL, 62704</p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -41,7 +60,7 @@ const Profile = () => {
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-gray-700">Username</label>
-                                    <p className="text-gray-900">johndoe</p>
+                                    <p className="text-gray-900">{profileDetails && profileDetails.user_id.toUpperCase()}</p>
                                 </div>
                                 <div>
                                     <label className="block text-gray-700">Password</label>
