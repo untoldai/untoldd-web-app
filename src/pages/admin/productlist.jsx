@@ -5,7 +5,7 @@ import { FaSearch, FaSort, FaFilter } from 'react-icons/fa';
 import { getAllProductService, updateActiveToggleStatusService, updateFeaturesToggleStatusService } from '../../service/admin/admin.service';
 import ListSkeltion from '../../comoponent/skelton/ListSkeltion';
 import { successToast } from '../../hooks/toast.hooks';
-import { errorResponse } from '../../../../untold-web-backend/src/utils/response.utils';
+
 const Productlist = () => {
     const { isToggle } = useContext(SidebarContext);
     const [products, setProducts] = useState([]);
