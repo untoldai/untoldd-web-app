@@ -98,6 +98,7 @@ const AddProduct = () => {
   
     try {
       const response = await addProductService(formPayload);
+      console.log(response)
       if (response.data && response.data.statusCode === 201) {
         successToast(response.data.message);
         setImagePreviews([]);
@@ -118,12 +119,15 @@ const AddProduct = () => {
           isFeatured: false,
           isActive: false,
         });
+        return;
       } else {
+        return;
         errorToast(response.error.message);
       }
     } catch (error) {
       console.error(error);
       errorToast('Something went wrong');
+      return;
     } finally {
       setIsSubmitting(false); // Enable the button again
     }
