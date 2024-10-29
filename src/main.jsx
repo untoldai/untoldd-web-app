@@ -38,6 +38,12 @@ import store from './redux/store.js';
 import DefaultSkeltion from './comoponent/skelton/DefaultSkeltion.jsx';
 import AdminAuthLayout from './comoponent/layout/Admin/AdminAuthLayout.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+import UserLayout from './comoponent/layout/User/UserLayout.jsx';
+import UserProfile from './pages/user/Profile.jsx';
+import UserOrderLists from './pages/user/OrderLists.jsx';
+import ProductDetails from './pages/kidsware/ProductDetails.jsx';
+import CheckoutPage from './pages/kidsware/CheckOut.jsx';
+import UserAuthLayout from './comoponent/authenticate/UserAuthLayout.jsx';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +59,7 @@ const router = createBrowserRouter([
     path: "/explore-products",
     element: <ExploreProducts />
   },
+
   {
     path: "/our-mission",
     element: <Mission />
@@ -80,35 +87,46 @@ const router = createBrowserRouter([
   },
   // kids ware routing
   {
-    path: "/kids-wear",
+    path: "/app",
     element: <KidsWearLayout />,
     children: [
       {
-        path: '/kids-wear',
+        path: '/app',
         element: <KidsWareHomepage />
       },
       {
-        path: "/kids-wear/about-us",
+        path: "/app/about-us",
         element: <BeautyAboutUs />
       },
       {
-        path: "/kids-wear/contact-us",
+        path: "/app/contact-us",
         element: <BeautyContactUs />
       },
       {
-        path: "/kids-wear/all-products",
+        path: "/app/all-products",
         element: <KidsWearAllProducts />
       },
       {
-        path: "/kids-wear/boys-clothing",
+        path: "/app/checkout",
+        element:
+          <UserAuthLayout slug='/app/checkout'>
+            <CheckoutPage />
+          </UserAuthLayout>
+      },
+      {
+        path: "/app/boys-clothing",
         element: <BoyKidsWearAllProducts />
       },
       {
-        path: "/kids-wear/girls-clothing",
+        path: "/app/girls-clothing",
         element: <GirlKidsWearAllProducts />
       },
       {
-        path: "/kids-wear/cart",
+        path: "/app/product-details",
+        element: <ProductDetails />
+      },
+      {
+        path: "/app/cart",
         element: <KidsWearCart />
       }
     ]
@@ -188,6 +206,26 @@ const router = createBrowserRouter([
         element: <OrderLists />
       }
     ]
+  },
+  {
+    path: '/user',
+    element: <UserLayout />,
+    children: [
+      {
+        path: "/user/profile",
+        element: <UserAuthLayout slug="/user/profile">
+          <UserProfile />
+        </UserAuthLayout>
+      },
+      {
+        path: "/user/my-orders",
+        element: <UserAuthLayout slug="/user/my-orders">
+          <UserOrderLists />
+        </UserAuthLayout>
+      },
+
+    ]
+
   }
 ])
 

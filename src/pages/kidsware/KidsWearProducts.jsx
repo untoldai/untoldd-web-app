@@ -1,6 +1,9 @@
 import React, { useState, Suspense, useEffect } from "react";
-import { FaEye, FaFilter, FaRupeeSign, FaShoppingCart, FaStar, FaTimes } from "react-icons/fa";
+import { FaEye, FaFilter, FaInbox, FaRupeeSign, FaShoppingCart, FaStar, FaTimes } from "react-icons/fa";
 import Rating from "react-rating";
+import { getProductByCategory } from "../../service/product/product.service";
+import CardSkelton from "../../comoponent/skelton/CardSkeltion";
+import Productcard from "../../comoponent/shared/card/productcard";
 
 
 const KidsWearAllProducts = () => {
@@ -58,7 +61,25 @@ const KidsWearAllProducts = () => {
             meetsPrice && meetsRating && meetsCategory && meetsLocation
         );
     });
-
+    const [products, setProducts] = useState([]);
+    // const [isLoading, setIsLoading] = useState(false);
+    const getProductS = async () => {
+        try {
+            setIsLoading(true);
+            const response = await getProductByCategory("Kids Wear");
+            if (response.data && response.data.statusCode === 200) {
+                setIsLoading(false);
+                setProducts(response.data.data.products);
+                return
+            }
+        } catch (error) {
+            setIsLoading(false);
+            return error
+        }
+    }
+    useEffect(() => {
+        getProductS();
+    }, [])
     return (
         <div className="flex flex-col md:flex-row min-h-screen mt-12">
             {/* Sidebar for Filters */}
@@ -168,44 +189,24 @@ const KidsWearAllProducts = () => {
 
 
 
-                    {
-                        [1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                            <div className='bg-white shadow-xl p-6 rounded-lg w-full hover:bg-slate-100 cursor-pointer ' key={i}>
-                                <img
-                                    src='https://uneno.madrasthemes.com/wp-content/uploads/2018/10/iyuviyvUntitled-1-400x439.jpg'
-                                    style={{ mixBlendMode: 'multiply' }}
-                                    alt='Cool T-shirt'
-                                    className='w-full'
-                                />
-                                {/* <SalesSticker isOpen={true} /> */}
-                                <div className='mt-2'>
-                                    <p className='text-xl font-medium'>Cool T-shirt</p>
-                                    <p className='text-gray-600 mb-2'>A stylish and comfortable T-shirt for your little one.</p>
-                                    <div className='flex justify-between items-center'>
-                                        <div className='flex items-center'>
-                                            <Rating
-                                                readonly
-                                                initialRating={5}
-                                                fullSymbol={<FaStar className='text-orange-600' />}
-                                            />
-                                        </div>
-                                        <p className='text-2xl text-black flex items-center'>
-                                            <FaRupeeSign className='text-black' /> 200
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className='flex justify-between gap-2 '>
-                                    <button className='mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-2 rounded-md font-bold hover:bg-orange-500 transition duration-300'>
-                                        <FaEye className='text-xl' /> View
-                                    </button>
-                                    <button className='mt-4 flex items-center justify-center gap-2 w-full border-2  text-black py-2 rounded-md font-bold + transition duration-300'>
-                                        <FaShoppingCart />  Add to Cart
-                                    </button>
-                                </div>
+                    
+                        {
+                            isLoading ?
+                                <CardSkelton />
+                                :
 
-                            </div>
-                        ))
-                    }
+                                products.length>0? products.map((prd, i) => (
+                                    <Suspense fallback={<CardSkelton />}>
+                                        <Productcard product={prd} isLoading={isLoading} />
+                                    </Suspense>
+                                ))
+                                :
+                                <div className="flex justify-center items-center gap-3">
+                                    <FaInbox />
+                                    <h4>Not Found</h4>
+                                </div>
+                        }
+                    
 
 
 

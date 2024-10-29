@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense, useEffect, useState, lazy } from 'react'
 import KidsWearHero from '../../comoponent/specific/main/KidsWearHero'
 // Import Slick CSS
 import Slider from 'react-slick';
@@ -8,9 +8,11 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import ProductSection from '../../comoponent/specific/main/TopDeals'
 import { categorySection } from '../../constants/product';
-import Rating from 'react-rating';
-import { FaEye, FaRupeeSign, FaShoppingCart, FaStar } from 'react-icons/fa';
+
 import { BelugaTshirt } from '../../assets';
+import { getProductByCategory } from '../../service/product/product.service';
+import CardSkelton from '../../comoponent/skelton/CardSkeltion';
+const Productcard = lazy(() => import('../../comoponent/shared/card/productcard'));
 const KidsWareHomepage = () => {
   const settings = {
     dots: true,
@@ -22,20 +24,37 @@ const KidsWareHomepage = () => {
     autoplaySpeed: 3000,
     dotsClass: 'slick-dots custom-dots', // Custom class for styling dots
     responsive: [
-        {
-            breakpoint: 768, // Adjust based on your mobile breakpoint
-            settings: {
-                slidesToShow: 1,  // Show only 1 slide on mobile
-                slidesToScroll: 1,
-            }
+      {
+        breakpoint: 768, // Adjust based on your mobile breakpoint
+        settings: {
+          slidesToShow: 1,  // Show only 1 slide on mobile
+          slidesToScroll: 1,
         }
+      }
     ]
-};
-
+  };
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const getProductS = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getProductByCategory("Kids Wear");
+      if (response.data && response.data.statusCode === 200) {
+        setIsLoading(false);
+        setProducts(response.data.data.products);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      return error
+    }
+  }
+  useEffect(() => {
+    getProductS();
+  }, [])
   return (
     <div className='w-[100vw] overflow-hidden'>
       <KidsWearHero />
-      <ProductSection />
+      <ProductSection product={products[0]} />
 
       <section className='px-20  my-10'>
         <div>
@@ -62,45 +81,18 @@ const KidsWareHomepage = () => {
       </section>
 
       <div className='p-5 my-10 '>
-        <p className='text-3xl font-bold  px-10'>Top Selling Products</p>
+        <p className='text-3xl font-bold  px-10 text-center'>Top Selling Products</p>
 
         <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-10 '>
           {
-            [1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div className='bg-white shadow-xl p-6 rounded-lg w-full hover:bg-slate-100 cursor-pointer ' key={i}>
-                <img
-                  src={BelugaTshirt}
-                  style={{ mixBlendMode: 'multiply' }}
-                  alt='Cool T-shirt'
-                  className='w-full'
-                />
-                {/* <SalesSticker isOpen={true} /> */}
-                <div className='mt-2'>
-                  <p className='text-xl font-medium'>Cool T-shirt</p>
-                  <p className='text-gray-600 mb-2'>A stylish and comfortable T-shirt for your little one.</p>
-                  <div className='flex justify-between items-center'>
-                    <div className='flex items-center'>
-                      <Rating
-                        readonly
-                        initialRating={5}
-                        fullSymbol={<FaStar className='text-orange-600' />}
-                      />
-                    </div>
-                    <p className='text-2xl text-black flex items-center'>
-                      <FaRupeeSign className='text-black' /> 200
-                    </p>
-                  </div>
-                </div>
-                <div className='flex justify-between gap-2 '>
-                  <button className='mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-2 rounded-md font-bold hover:bg-orange-500 transition duration-300'>
-                    <FaEye className='text-xl' /> View
-                  </button>
-                  <button className='mt-4 flex items-center justify-center gap-2 w-full border-2  text-black py-2 rounded-md font-bold + transition duration-300'>
-                    <FaShoppingCart />  Add to Cart
-                  </button>
-                </div>
+            isLoading?
+            <CardSkelton />
+            :
 
-              </div>
+            products && products.map((prd, i) => (
+              <Suspense fallback={<CardSkelton />}>
+                <Productcard product={prd} isLoading={isLoading} />
+              </Suspense>
             ))
           }
         </div>

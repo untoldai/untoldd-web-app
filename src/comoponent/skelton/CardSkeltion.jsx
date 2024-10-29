@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CardSkeltion = () => {
+const CardSkelton = () => {
   return (
     
 <div role="status" class="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
@@ -29,4 +29,4 @@ const CardSkeltion = () => {
   )
 }
 
-export default CardSkeltion
+export default CardSkelton

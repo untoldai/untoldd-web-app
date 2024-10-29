@@ -14,7 +14,7 @@ const SalesSticker = ({ isOpen }) => (
     </div>
 );
 
-const ProductSection = () => {
+const ProductSection = ({ product }) => {
     const settings = {
         dots: true,
         infinite: true,
@@ -83,15 +83,15 @@ const ProductSection = () => {
 
             <div className='bg-white shadow-xl p-6 rounded-lg w-full lg:w-1/4'>
                 <img
-                    src='https://uneno.madrasthemes.com/wp-content/uploads/2018/10/iyuviyvUntitled-1-400x439.jpg'
+                    src={product?.images[0].url}
                     style={{ mixBlendMode: 'multiply' }}
                     alt='Cool T-shirt'
                     className='w-full'
                 />
-                <SalesSticker isOpen={true} />
+                {/* <SalesSticker isOpen={true} /> */}
                 <div className='mt-2'>
-                    <p className='text-xl font-medium'>Cool T-shirt</p>
-                    <p className='text-gray-600 mb-2'>A stylish and comfortable T-shirt for your little one.</p>
+                    <p className='text-xl font-medium'>{product?.name}</p>
+                    <p className='text-gray-600 mb-2'>{product?.description?.substring(0, 10)}.</p>
                     <div className='flex justify-between items-center'>
                         <div className='flex items-center'>
                             <Rating
@@ -101,7 +101,7 @@ const ProductSection = () => {
                             />
                         </div>
                         <p className='text-2xl text-black'>
-                            <FaRupeeSign className='text-black' /> 200
+                            <FaRupeeSign className='text-black' /> {product?.price}
                         </p>
                     </div>
                 </div>

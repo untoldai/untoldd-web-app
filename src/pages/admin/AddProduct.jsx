@@ -5,14 +5,18 @@ import { SidebarContext } from '../../context/SidebarContext';
 import { addProductService } from '../../service/admin/admin.service';
 import { successToast, errorToast } from '../../hooks/toast.hooks';
 import PendualLoader from '../../comoponent/Loader/PendualLoader';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [value, setValue] = useState('');
+  
   const [formData, setFormData] = useState({
     name: '',
     type: '',
     price: '',
-    description: '',
+    description: value,
     category: '',
     stock: '',
     brand: '',
@@ -21,7 +25,8 @@ const AddProduct = () => {
     tags: '',
     variants: [{ color: '', size: '', additionalPrice: '' }],
     isFeatured: false,
-    isActive: false,
+    isActive: true,
+    video_url: ''
   });
 
   const { isToggle } = useContext(SidebarContext);
@@ -91,7 +96,7 @@ const AddProduct = () => {
         formPayload.append(key, formData[key]);
       }
     }
-  console.log(formPayload.get('images'))
+  
     try {
       const response = await addProductService(formPayload);
       if (response.data && response.data.statusCode === 201) {
@@ -140,34 +145,43 @@ const AddProduct = () => {
                   <option value="Cosmetic">Cosmetic</option>
                 </select>
               </div>
-              {['name', 'price', 'description', 'category', 'stock', 'brand', 'sku'].map((field) => (
-                <div className="mb-4" key={field}>
-                  <label className="block text-gray-700 font-medium">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                  {field === 'description' ? (
-                    <textarea name={field} value={formData[field]} onChange={handleChange} className="mt-1 block w-full border border-gray-300 bg-white text-gray-900 rounded-md p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                  ) : (
-                    <input type={field === 'price' || field === 'stock' ? 'number' : 'text'} name={field} value={formData[field]} onChange={handleChange} placeholder={`Product ${field}`} className="mt-1 block w-full border border-gray-300 bg-white text-gray-900 rounded-md p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                  )}
-                  {field === 'category' && (
-                    <select name={field} value={formData[field]} onChange={handleChange} className="mt-1 block w-full border border-gray-300 bg-white text-gray-900 rounded-md p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                      <option value="" disabled>Select Category</option>
-                      {formData.type === 'Kids Wear' && (
-                        <>
-                          <option value="Boy">Boy</option>
-                          <option value="Girl">Girl</option>
-                          <option value="both">Both</option>
-                        </>
-                      )}
-                      {formData.type === 'Cosmetic' && (
-                        <>
-                          <option value="Cosmetics">Cosmetics</option>
-                          <option value="Skincare">Skincare</option>
-                        </>
-                      )}
-                    </select>
-                  )}
-                </div>
-              ))}
+              {['name', 'price', 'video_url', 'description', 'category', 'stock', 'brand', 'sku'].map((field) => (
+  <div className="mb-4" key={field}>
+    <label className="block text-gray-700 font-medium">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+    {field === 'description' ? (
+      <ReactQuill theme="snow" value={value} onChange={setValue} className='h-full mb-3' />
+    ) : (
+      <input 
+        type={field === 'price' ? 'number' : field === 'video_url' ? 'url' : 'text'} 
+        name={field} 
+        value={formData[field]} 
+        onChange={handleChange} 
+        placeholder={`Product ${field}`} 
+        className="mt-1 block w-full border border-gray-300 bg-white text-gray-900 rounded-md p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        required 
+      />
+    )}
+    {field === 'category' && (
+      <select name={field} value={formData[field]} onChange={handleChange} className="mt-1 block w-full border border-gray-300 bg-white text-gray-900 rounded-md p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <option value="" disabled>Select Category</option>
+        {formData.type === 'Kids Wear' && (
+          <>
+            <option value="Boy">Boy</option>
+            <option value="Girl">Girl</option>
+            <option value="both">Both</option>
+          </>
+        )}
+        {formData.type === 'Cosmetic' && (
+          <>
+            <option value="Cosmetics">Cosmetics</option>
+            <option value="Skincare">Skincare</option>
+          </>
+        )}
+      </select>
+    )}
+  </div>
+))}
+
             </div>
 
             <div className="mb-6">

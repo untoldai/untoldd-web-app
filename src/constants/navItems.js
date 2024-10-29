@@ -98,7 +98,38 @@ export const navItems = [
   },
 
 ];
+export const usernavItems = [
 
+  {
+    id: 3,
+    slug: '/user/profile',
+    title: 'Profile',
+    icon: FaUser
+  },
+  // {
+  //   id: 4,
+  //   slug: '/admin/setting',
+  //   title: 'Setting',
+  //   icon: FaCog
+  // },
+  {
+    id: 10,
+    slug: '/user/my-orders',
+    title: 'Orders',
+    icon: FaClipboardList,
+    roles: ['vendor']
+  },
+
+  {
+    id: 12,
+    slug: '/user/reviews',
+    title: 'Reviews',
+    icon: FaComments,
+    roles: ['admin', 'vendor']
+  },
+
+
+];
 
 export const footerItem = [
   {
@@ -175,28 +206,28 @@ export const footerItem = [
 export const kidsWearNavItems = [
   {
     id: 0,
-    title: "All products",
-    slug: "/kids-wear/all-products"
+    title: "Home",
+    slug: "/app"
   },
   {
     id: 1,
-    title: "Boy's Clothing",
-    slug: "/kids-wear/boys-clothing"
+    title: "Products",
+    slug: "/app/all-products"
   },
   {
     id: 2,
-    title: "Girls Clothing",
-    slug: "/kids-wear/girls-clothing"
+    title: "Blogs",
+    slug: "/app/blgs"
   },
   {
     id: 3,
     title: "About Us",
-    slug: "/kids-wear/about-us"
+    slug: "/app/about-us"
   },
   {
     id: 4,
     title: "Contact us",
-    slug: "/kids-wear/contact-us"
+    slug: "/app/contact-us"
   }
 ]
 

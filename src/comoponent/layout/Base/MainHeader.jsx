@@ -11,7 +11,7 @@ const MainHeader = () => {
             </div>
             <div className='flex justify-around'>
                 <div className='flex justify-around items-center gap-3'>
-                    <Link to={'/kids-wear'} className='text-xs md:text-xl cursor-pointer hover:bg-slate-100 p-1  rounded-md'>
+                    <Link to={'/app'} className='text-xs md:text-xl cursor-pointer hover:bg-slate-100 p-1  rounded-md'>
                         Explore Us
                     </Link>
                     <div className='h-5 bg-black w-0.5' />

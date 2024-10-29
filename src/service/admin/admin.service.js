@@ -1,7 +1,8 @@
 import { getBaseDomain } from "../../handler/domainhandler";
 import { getRequest, postRequest, putRequest } from "../../handler/request";
 import { getHeaderConfig } from "../../utils/headerconfig";
-
+import { getAdminToken } from "../../utils/tokenStorage";
+const token = getAdminToken();
 export const adminLoginService = async (payload) => {
     try {
         const response = await postRequest({
@@ -20,7 +21,7 @@ export const getAdminProfileService = async () => {
     try {
         const response = await getRequest({
             url: getBaseDomain() + "auth/admin/profile",
-            headers: getHeaderConfig()
+            headers: getHeaderConfig(token)
         });
         return response;
     } catch (error) {
@@ -31,7 +32,7 @@ export const getAdminProfileDetailsService = async () => {
     try {
         const response = await getRequest({
             url: getBaseDomain() + "auth/admin/profile-details",
-            headers: getHeaderConfig()
+            headers: getHeaderConfig(token)
         });
         return response;
     } catch (error) {
@@ -45,7 +46,7 @@ export const addProductService = async (payload) => {
         const response = await postRequest({
             url: getBaseDomain() + 'product/admin/add-product',
             data: payload,
-            headers: getHeaderConfig()
+            headers: getHeaderConfig(token)
 
         });
         return response;
@@ -57,7 +58,7 @@ export const getAllProductService = async ({ page, limit = 20 }) => {
     try {
         const response = await getRequest({
             url: getBaseDomain() + "product/all-product",
-            headers: getHeaderConfig()
+            headers: getHeaderConfig(token)
         });
         return response;
     } catch (error) {
@@ -69,7 +70,7 @@ export const updateActiveToggleStatusService = async ({ payload }) => {
         const response = await putRequest({
             url: getBaseDomain() + "product/admin/toggle-active",
             data: payload,
-            headers: getHeaderConfig()
+            headers: getHeaderConfig(token)
         });
         return response;
     } catch (error) {
@@ -81,7 +82,19 @@ export const updateFeaturesToggleStatusService = async ({ payload }) => {
         const response = await putRequest({
             url: getBaseDomain() + "product/admin/toggle-features",
             data: payload,
-            headers: getHeaderConfig()
+            headers: getHeaderConfig(token)
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const getAllUserListsService = async (page, limit) => {
+    try {
+        const response = await getRequest({
+            url: getBaseDomain() + `auth/admin/user-lists?limit=${limit}&page=${page}`,
+            headers: getHeaderConfig(token)
         });
         return response;
     } catch (error) {

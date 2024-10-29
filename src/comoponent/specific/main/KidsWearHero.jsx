@@ -1,12 +1,13 @@
 import React from 'react';
 import { appColor } from '../../../style/style'; // Assuming this is being used elsewhere
+import { UntolddBanner } from '../../../assets';
 
 const KidsWearHero = () => {
     return (
         <div 
             className='overflow-hidden h-full bg-[#FFFDF2] min-h-screen flex items-center bg-cover bg-center'
             style={{
-                backgroundImage: "url('https://duyn491kcolsw.cloudfront.net/files/2v/2v2/2v244s.jpg?ph=cd1d157765')",
+                backgroundImage: `url(${UntolddBanner})`,
             }}
         >
             <div className='mx-4 md:ml-36 mt-20'>

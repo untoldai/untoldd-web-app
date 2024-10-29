@@ -3,7 +3,7 @@ import UntloddLogo from "./UntolddLogo.png"
 import SphereObject from "./icon/sc.png";
 import ExploreImage from './ExploreStore.png';
 import PartnerButton from "./Partner.png";
-import UntolddBanner from "./untolddbanner.png";
+import UntolddBanner from "./untolddbanner1.png";
 import Perfume from "./products/perfume.png";
 import BlackPerfume from "./products/blackperfume.png";
 import Cloth1 from "./products/Cloth1.png";

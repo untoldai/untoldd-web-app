@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { getAllUserListsService } from '../../service/admin/admin.service';
 const initialCustomers = [
     { id: 1, name: 'John Doe', email: 'john.doe@example.com', createdAt: '2023-01-15' },
     { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', createdAt: '2023-03-22' },
@@ -6,8 +7,11 @@ const initialCustomers = [
     // Add more customers as needed
 ];
 const Customer = () => {
-    const [customers, setCustomers] = useState(initialCustomers);
+    const [customers, setCustomers] = useState([]);
+    const [limit, setLimit] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
     const [sortKey, setSortKey] = useState('name');
+    const [pagination, setPagination] = useState({});
     const [sortOrder, setSortOrder] = useState('asc');
 
     const sortCustomers = (key) => {
@@ -20,7 +24,22 @@ const Customer = () => {
         setSortKey(key);
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     };
-
+    async function getAllUserLists() {
+        try {
+            const resp = await getAllUserListsService(currentPage, limit);
+            if (resp.data.statusCode === 200) {
+                setLoading(false)
+                setCustomers(resp.data.data.data);
+                setPagination(resp.data.data.pagination)
+                return;
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+    useEffect(() => {
+        getAllUserLists();
+    }, [])
     return (
         <div>
             <div className="min-h-screen bg-gray-100 p-6 my-20">

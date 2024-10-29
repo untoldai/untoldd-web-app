@@ -1,5 +1,5 @@
-import { getAdminToken } from "./tokenStorage"
 
-export function getHeaderConfig(){
-    return { Authorization:getAdminToken()}
+
+export function getHeaderConfig(token){
+    return { Authorization:token}
 }

@@ -9,3 +9,12 @@ export const getAdminToken = () => {
 export const removeAdminToken = () => {
     return Cookies.remove('adminToken');
 }
+export const setUserToken = (token) => {
+    return Cookies.set('userToken', token, { expires: 0.125 })
+}
+export const getUserToken = () => {
+    return Cookies.get('userToken');
+}
+export const removeUserToken = () => {
+    return Cookies.remove('userToken');
+}
