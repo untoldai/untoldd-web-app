@@ -36,16 +36,14 @@ const UserAuthLayout = ({ slug = "/auth/user-login", children }) => {
                 navigate('/auth/user-login');
                 return;
             }
-            if (response.data.success === true) {
+            if (response.data.success) {
                 dispatch(loginUser(response.data.data))
                 setIsLoading(false)
                 navigate(slug);
                 return;
             }
         } catch (err) {
-            setIsLoading(false)
-            //  removeUserToken();
-            navigate('/auth/user-login');
+          
 
             setError("An error occurred during authentication.");
             console.error(err);
