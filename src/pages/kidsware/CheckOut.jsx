@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BelugaTshirt } from '../../assets';
+import { BelugaTshirt, UntloddLogo } from '../../assets';
 import { FaRupeeSign, FaUser, FaPhone, FaEnvelope, FaMapMarkedAlt, FaShoppingCart, FaMoneyBillWave, FaEdit } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -44,6 +44,70 @@ const CheckOutPage = () => {
             console.error("Error fetching addresses:", error);
         }
     };
+
+// payment data
+async function InsitateBooking() {
+    try {
+      const payload = {
+       
+      };
+      //console.log(bookingTime)
+      const response = await CreateBooking(payload);
+      
+    } catch (error) {
+      //console.log(error);
+      return;
+    }
+  }
+  const handleCreateOrder = async (newBookingId) => {
+    try {
+     
+      const paymentOrder = await createOrder(prepaid);
+      
+      setPaymentId(paymentOrder?.data.newPayment._id);
+      localStorage.setItem("paymentId1", paymentOrder?.data.newPayment._id);
+
+      const options = {
+        key: "rzp_test_xKVw1JqVJzxhCB",
+        amount: paymentOrder?.data.order.amount,
+        currency: "INR",
+        name: "Untoldd.in",
+        description: "You are paying us to book your order ",
+        image: UntloddLogo,
+        order_id: paymentOrder?.data.order?.id,
+        handler: function (response, error) {
+          const data = {
+            orderCreationId: paymentOrder?.data.order?.id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            paidAmount: paymentOrder?.data.order.amount,
+            bookingId: newBookingId,
+            paymentId1: paymentId1,
+          };
+          VerifyPaymentHandler({ data: data });
+          // alert("This step of Payment Succeeded");
+        },
+        prefill: {
+          //Here we are prefilling random contact
+          contact: user.data.phone,
+          //name and email id, so while checkout
+          name: user.data.name,
+          email: user.data.email,
+        },
+
+        theme: {
+          color: "#2300a3",
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      //console.log(error);
+    }
+  };
+
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         setProducts(storedCart);

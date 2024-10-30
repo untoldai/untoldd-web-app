@@ -38,8 +38,8 @@ import store from './redux/store.js';
 import DefaultSkeltion from './comoponent/skelton/DefaultSkeltion.jsx';
 import AdminAuthLayout from './comoponent/layout/Admin/AdminAuthLayout.jsx';
 import AboutUs from './pages/AboutUs.jsx';
-import UserLayout from './comoponent/layout/User/UserLayout.jsx';
-import UserProfile from './pages/user/Profile.jsx';
+import UserLayout from './comoponent/authenticate/UserAuthLayout.jsx';
+const UserProfile = lazy(() => import('./pages/user/Profile.jsx'));
 import UserOrderLists from './pages/user/OrderLists.jsx';
 import ProductDetails from './pages/kidsware/ProductDetails.jsx';
 import CheckoutPage from './pages/kidsware/CheckOut.jsx';
@@ -112,6 +112,12 @@ const router = createBrowserRouter([
           <UserAuthLayout slug='/app/checkout'>
             <CheckoutPage />
           </UserAuthLayout>
+      },
+      {
+        path:"/app/user-profile",
+        element:<UserAuthLayout slug='/app/user-profile'>
+          <UserProfile />
+        </UserAuthLayout>
       },
       {
         path: "/app/boys-clothing",
@@ -207,26 +213,7 @@ const router = createBrowserRouter([
       }
     ]
   },
-  {
-    path: '/user',
-    element: <UserLayout />,
-    children: [
-      {
-        path: "/user/profile",
-        element: <UserAuthLayout slug="/user/profile">
-          <UserProfile />
-        </UserAuthLayout>
-      },
-      {
-        path: "/user/my-orders",
-        element: <UserAuthLayout slug="/user/my-orders">
-          <UserOrderLists />
-        </UserAuthLayout>
-      },
-
-    ]
-
-  }
+  
 ])
 
 createRoot(document.getElementById('root')).render(
@@ -235,14 +222,12 @@ createRoot(document.getElementById('root')).render(
       <RouterProvider router={router} />
       <ToastContainer
         position="top-right" // You can change this to any position
-        autoClose={5000} // Auto close after 5 seconds
+        autoClose={3000} // Auto close after 5 seconds
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
+ 
       />
     </Provider>
   </StrictMode>,

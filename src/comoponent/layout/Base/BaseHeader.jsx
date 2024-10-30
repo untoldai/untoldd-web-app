@@ -36,7 +36,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                     {
                         user && user?.isLoggedIn || getUserToken() ?
                             <div className='flex gap-3 items-center'>
-                                <ToolTipButton Icon={FaUser} title={"Profile"} handleClick={() => navigate("/user/profile")} />
+                                <ToolTipButton Icon={FaUser} title={"Profile"} handleClick={() => navigate("/app/user-profile")} />
 
                                 <ToolTipButton Icon={FaSignOutAlt} title={"Logout"} handleClick={() => removeUserToken()} />
                             </div>

@@ -5,7 +5,7 @@ export function getBaseDomain() {
     let baseDomain;
 
 
-    switch ('prod') {
+    switch ('dev') {
         case 'dev':
             baseDomain = local;
             break;
