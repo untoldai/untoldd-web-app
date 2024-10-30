@@ -3,7 +3,9 @@ import { BelugaTshirt, UntloddLogo } from '../../assets';
 import { FaRupeeSign, FaUser, FaPhone, FaEnvelope, FaMapMarkedAlt, FaShoppingCart, FaMoneyBillWave, FaEdit } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getAddressListsService, getUserProfileService } from '../../service/user/user.service';
+import { confirmOrderService, createOrderService, getAddressListsService, getUserProfileService, intiatePaymentService, verifyPaymentPaymentService } from '../../service/user/user.service';
+import { errorToast, successToast } from '../../hooks/toast.hooks';
+import OrderLoader from '../../comoponent/Loader/OrderLoader';
 const CheckOutPage = () => {
     const [addresses, setAddresses] = useState([]);
     const [user, setUser] = useState(null)
@@ -12,6 +14,8 @@ const CheckOutPage = () => {
     const paramValue = searchParams.get('id');
     const navigate = useNavigate()
     const [products, setProducts] = useState([]);
+    const [orderId, setOrderId] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const getTotalPrice = () => {
         return products.reduce((total, product) => total + product.price * product.quantity, 0);
     };
@@ -45,69 +49,122 @@ const CheckOutPage = () => {
         }
     };
 
-// payment data
-async function InsitateBooking() {
-    try {
-      const payload = {
-       
-      };
-      //console.log(bookingTime)
-      const response = await CreateBooking(payload);
-      
-    } catch (error) {
-      //console.log(error);
-      return;
+    // payment data
+    async function InsitateBooking() {
+        try {
+            setIsLoading(true)
+            if(selectedAddressId===""){
+                setIsLoading(false)
+                return errorToast('please selected delivery address')
+            }
+            const payload = {
+                totalAmount: getTotalPrice() - 20 % 100 + 40,
+                products: products,
+                address_id: selectedAddressId
+            };
+            //console.log(products)
+            const response = await createOrderService(payload);
+            //console.log(response)
+            if (response.data !== null && response.data.statusCode === 201) {
+                setOrderId(response.data.data._id)
+                localStorage.setItem('oid', response.data.data._id)
+                await handleCreateOrder(response.data.data._id, response.data.data.totalAmount)
+            }
+        } catch (error) {
+            setIsLoading(false)
+            //console.log(error);
+            return;
+        }
     }
-  }
-  const handleCreateOrder = async (newBookingId) => {
-    try {
-     
-      const paymentOrder = await createOrder(prepaid);
-      
-      setPaymentId(paymentOrder?.data.newPayment._id);
-      localStorage.setItem("paymentId1", paymentOrder?.data.newPayment._id);
+    const VerifyPaymentHandler = async ({ data }) => {
+        try {
+            const response = await verifyPaymentPaymentService(data);
 
-      const options = {
-        key: "rzp_test_xKVw1JqVJzxhCB",
-        amount: paymentOrder?.data.order.amount,
-        currency: "INR",
-        name: "Untoldd.in",
-        description: "You are paying us to book your order ",
-        image: UntloddLogo,
-        order_id: paymentOrder?.data.order?.id,
-        handler: function (response, error) {
-          const data = {
-            orderCreationId: paymentOrder?.data.order?.id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature,
-            paidAmount: paymentOrder?.data.order.amount,
-            bookingId: newBookingId,
-            paymentId1: paymentId1,
-          };
-          VerifyPaymentHandler({ data: data });
-          // alert("This step of Payment Succeeded");
-        },
-        prefill: {
-          //Here we are prefilling random contact
-          contact: user.data.phone,
-          //name and email id, so while checkout
-          name: user.data.name,
-          email: user.data.email,
-        },
+            if (response.data !== null && response.data.statusCode === 200) {
+                await ConfirmBooking();
+                return;
+            }
+        } catch (error) {
+            setIsLoading(false)
+            return;
+        }
+    };
+    const handleCreateOrder = async (orderId, totalAmount) => {
+        try {
+            const payload = {
+                orderId: orderId,
+                amount: totalAmount
+            }
+            const paymentOrder = await intiatePaymentService(payload);
 
-        theme: {
-          color: "#2300a3",
-        },
-      };
 
-      const paymentObject = new window.Razorpay(options);
-      paymentObject.open();
-    } catch (error) {
-      //console.log(error);
-    }
-  };
 
+            const options = {
+                key: "rzp_test_xKVw1JqVJzxhCB",
+                amount: paymentOrder?.data.data.order.amount,
+                currency: "INR",
+                name: "Untoldd.in",
+                description: "You are paying us to book your order ",
+                image: UntloddLogo,
+                order_id: paymentOrder?.data.data.order?.id,
+                handler: function (response, error) {
+                    const data = {
+                        orderCreationId: paymentOrder?.data.data.order?.id,
+                        razorpayPaymentId: response.razorpay_payment_id,
+                        razorpayOrderId: response.razorpay_order_id,
+                        razorpaySignature: response.razorpay_signature,
+
+
+                    };
+                    VerifyPaymentHandler({ data: data });
+                    // alert("This step of Payment Succeeded");
+                },
+                prefill: {
+                    //Here we are prefilling random contact
+                    contact: user?.contact.phone,
+                    //name and email id, so while checkout
+                    name: user?.personal_details.first_name,
+                    email: user?.contact.email,
+                },
+
+                theme: {
+                    color: "#2300a3",
+                },
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+        } catch (error) {
+            setIsLoading(false)
+            console.log(error);
+        }
+    };
+
+    const ConfirmBooking = async () => {
+        try {
+            const payload = {
+
+                "status": "CONFIRMED"
+            };
+
+            const response = await confirmOrderService(payload, localStorage.getItem('oid'));
+            console.log(response)
+            if (response.data !== null && response.data.statusCode === 200) {
+                setIsLoading(false)
+                //  console.log("aks");
+                // successMessage("Hotel Book conform");
+                localStorage.removeItem("cart");
+                localStorage.removeItem('oid');
+                successToast("Thanks for booking order");
+                navigate("/app/order/conform")
+                return;
+            }
+
+        } catch (error) {
+            setIsLoading(false)
+            return;
+        }
+    };
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         setProducts(storedCart);
@@ -115,141 +172,141 @@ async function InsitateBooking() {
         fetchAddresses();
     }, []);
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 my-20 md:px-28 px-0'>
-            {/* Personal Information Card */}
-            <div className='shadow-2xl rounded-lg border p-2 bg-white max-w-xl' >
-                <h2 className='text-xl font-bold text-neutral-800 flex items-center mb-4'>
-                    <FaUser className='mr-2' />
-                    Personal Information
-                </h2>
-                <ul className='text-neutral-700 mb-4'>
-                    <li className='flex items-center mb-1'>
-                        <FaUser className='inline mr-2 text-violet-600' />
-                        <span>Name:{user?.personal_details.first_name + " " + user?.personal_details.last_name}</span>
-                    </li>
-                    <li className='flex items-center mb-1'>
-                        <FaPhone className='inline mr-2 text-violet-600' />
-                        <span>Phone: {user?.contact.phone}</span>
-                    </li>
-                    <li className='flex items-center mb-1'>
-                        <FaEnvelope className='inline mr-2 text-violet-600' />
-                        <span>Email: {user?.contact.email}</span>
-                    </li>
-                </ul>
+        <div>
+            {
+                isLoading ?
+                    <div className='min-h-[80vh] flex items-center justify-center'>
 
-                <div className="container mx-auto p-6">
-                    <h2 className="text-2xl font-semibold mb-4">Select Shipping Address</h2>
+                        <OrderLoader />
+                    </div>
 
-                    <div className="mt-6">
-                        {addresses.length > 0 ? addresses.map((address) => (
-                            <div
-                                key={address._id}
-                                className={`border border-gray-300 rounded p-4 mb-4 bg-gray-50 cursor-pointer ${address._id === selectedAddressId ? 'border-blue-500' : ''}`}
-                                onClick={() => onSelectAddress(address._id)}
-                            >
-                                <h4 className="font-semibold flex items-center">
-                                    {address.isDefault && (
-                                        <span className="bg-blue-500 text-white text-xs font-bold rounded-full px-2 py-1 mr-2">
-                                            Default
-                                        </span>
-                                    )}
-                                    {address.streetAddress}, {address.city}, {address.state} {address.postalCode}
-                                </h4>
-                                <p>{address.phone}</p>
-                                <p>Type: {address.addressType}</p>
-                                <p>Default: {address.isDefault ? 'Yes' : 'No'}</p>
-                                <div className="mt-2">
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleEdit(address);
-                                        }}
-                                        className="mr-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-400 transition duration-200"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleSetDefault(address._id);
-                                        }}
-                                        className={`p-2 rounded transition duration-200 ${address.isDefault ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-400'}`}
-                                        disabled={address.isDefault}
-                                    >
-                                        Set as Default
-                                    </button>
+                    :
+
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 my-20 md:px-28 px-0'>
+                        {/* Personal Information Card */}
+                        <div className='shadow-2xl rounded-lg border p-2 bg-white max-w-xl' >
+                            <h2 className='text-xl font-bold text-neutral-800 flex items-center mb-4'>
+                                <FaUser className='mr-2' />
+                                Personal Information
+                            </h2>
+                            <ul className='text-neutral-700 mb-4'>
+                                <li className='flex items-center mb-1'>
+                                    <FaUser className='inline mr-2 text-violet-600' />
+                                    <span>Name:{user?.personal_details.first_name + " " + user?.personal_details.last_name}</span>
+                                </li>
+                                <li className='flex items-center mb-1'>
+                                    <FaPhone className='inline mr-2 text-violet-600' />
+                                    <span>Phone: {user?.contact.phone}</span>
+                                </li>
+                                <li className='flex items-center mb-1'>
+                                    <FaEnvelope className='inline mr-2 text-violet-600' />
+                                    <span>Email: {user?.contact.email}</span>
+                                </li>
+                            </ul>
+
+                            <div className="container mx-auto p-6">
+                                <h2 className="text-2xl font-semibold mb-4">Select Shipping Address</h2>
+
+                                <div className="mt-6">
+                                    {addresses.length > 0 ? addresses.map((address) => (
+                                        <div
+                                            key={address._id}
+                                            className={`border border-gray-300 rounded p-4 mb-4 bg-gray-50 cursor-pointer ${address._id === selectedAddressId ? 'border-blue-500' : ''}`}
+
+                                        >
+                                            <h4 className="font-semibold flex items-center">
+                                                {address.isDefault && (
+                                                    <span className="bg-blue-500 text-white text-xs font-bold rounded-full px-2 py-1 mr-2">
+                                                        Default
+                                                    </span>
+                                                )}
+                                                {address.streetAddress}, {address.city}, {address.state} {address.postalCode}
+                                            </h4>
+                                            <p>{address.phone}</p>
+                                            <p>Type: {address.addressType}</p>
+
+                                            <div className="mt-2">
+                                                <button
+                                                    onClick={(e) => setselectedAddressId(address?._id)}
+                                                    className={`mr-2 p-2 ${selectedAddressId === address._id ? "bg-blue-500" : "bg-gray-800"} text-white rounded  transition duration-200`}
+                                                >
+                                                    Select
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    ))
+                                        : ""
+                                    }
                                 </div>
                             </div>
-                        ))
-                            : ""
-                        }
-                    </div>
-                </div>
 
-                <button onClick={() => navigate('/user/profile')} type="button" className='bg-violet-700 text-white font-bold rounded-lg shadow-md mt-3 px-4 py-2 hover:bg-violet-600'>
-                    Add New Address
-                </button>
-            </div>
+                            <button onClick={() => navigate('/user/profile')} type="button" className='bg-violet-700 text-white font-bold rounded-lg shadow-md mt-3 px-4 py-2 hover:bg-violet-600'>
+                                Add New Address
+                            </button>
+                        </div>
 
-            <div className='flex flex-col gap-3 '>
+                        <div className='flex flex-col gap-3 '>
 
 
-                {/* Products Card */}
-                <div className='shadow-lg rounded-lg border  p-6 bg-white max-w-xl'>
-                    <h2 className='font-bold text-xl text-neutral-800 flex items-center mb-4'>
-                        <FaShoppingCart className='mr-2' />
-                        Products
-                    </h2>
-                    {
-                        products && products.map((prd, i) => (
-                            <div key={prd.id} className="flex bg-white p-4 rounded shadow-md">
-                                <img src={prd.image} alt={prd.name} className="h-24 w-24 object-cover mr-4 rounded" />
-                                <div className="flex-grow">
-                                    <h2 className="text-lg font-semibold">{prd.name}</h2>
-                                    <p className="text-gray-600 flex items-center">MRP: <FaRupeeSign />{prd.price}</p>
+                            {/* Products Card */}
+                            <div className='shadow-lg rounded-lg border  p-6 bg-white max-w-xl'>
+                                <h2 className='font-bold text-xl text-neutral-800 flex items-center mb-4'>
+                                    <FaShoppingCart className='mr-2' />
+                                    Products
+                                </h2>
+                                {
+                                    products && products.map((prd, i) => (
+                                        <div key={prd.id} className="flex bg-white p-4 rounded shadow-md">
+                                            <img src={prd.image} alt={prd.name} className="h-24 w-24 object-cover mr-4 rounded" />
+                                            <div className="flex-grow">
+                                                <h2 className="text-lg font-semibold">{prd.name}</h2>
+                                                <p className="text-gray-600 flex items-center">MRP: <FaRupeeSign />{prd.price}</p>
 
-                                    <p className="text-gray-500 text-sm">Qty: {prd.quantity}</p>
+                                                <p className="text-gray-500 text-sm">Qty: {prd.quantity}</p>
 
-                                </div>
+                                            </div>
 
+                                        </div>
+                                    ))
+                                }
                             </div>
-                        ))
-                    }
-                </div>
 
 
-                {/* Payment Details Card */}
-                <div className='shadow-lg rounded-md border  p-4 bg-white col-span-1 md:col-span-2 max-w-xl'>
-                    <h2 className='font-bold text-neutral-700 flex items-center'><FaMoneyBillWave className='mr-2' /> Payment Details</h2>
-                    <div className='mt-2'>
-                        <div className='flex justify-between'>
-                            <p>Total MRP</p>
-                            <p className='flex items-center'><FaRupeeSign /> {getTotalPrice()}</p>
-                        </div>
-                        <div className='flex justify-between'>
-                            <p>Discount</p>
-                            <p className='flex items-center'>20%</p>
-                        </div>
-                        <div className='flex justify-between'>
-                            <p>Total Amount</p>
-                            <p className='flex items-center'><FaRupeeSign /> {getTotalPrice() - 20 % 100}</p>
-                        </div>
-                        <div className='flex justify-between'>
-                            <p>Shipping Charges</p>
-                            <p className='flex items-center'><FaRupeeSign /> 40</p>
-                        </div>
-                        <div className='flex justify-between'>
-                            <p>GST Charges</p>
-                            <p className='flex items-center'><FaRupeeSign /> 0</p>
-                        </div>
-                        <div className='flex justify-between font-bold'>
-                            <p>Final Amount</p>
-                            <p className='flex items-center'><FaRupeeSign /> {getTotalPrice() - 20 % 100 + 40}</p>
+                            {/* Payment Details Card */}
+                            <div className='shadow-lg rounded-md border  p-4 bg-white col-span-1 md:col-span-2 max-w-xl'>
+                                <h2 className='font-bold text-neutral-700 flex items-center'><FaMoneyBillWave className='mr-2' /> Payment Details</h2>
+                                <div className='mt-2'>
+                                    <div className='flex justify-between'>
+                                        <p>Total MRP</p>
+                                        <p className='flex items-center'><FaRupeeSign /> {getTotalPrice()}</p>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <p>Discount</p>
+                                        <p className='flex items-center'>20%</p>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <p>Total Amount</p>
+                                        <p className='flex items-center'><FaRupeeSign /> {getTotalPrice() - 20 % 100}</p>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <p>Shipping Charges</p>
+                                        <p className='flex items-center'><FaRupeeSign /> 40</p>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <p>GST Charges</p>
+                                        <p className='flex items-center'><FaRupeeSign /> 0</p>
+                                    </div>
+                                    <div className='flex justify-between font-bold'>
+                                        <p>Final Amount</p>
+                                        <p className='flex items-center'><FaRupeeSign /> {getTotalPrice() - 20 % 100 + 40}</p>
+                                    </div>
+                                </div>
+                                <button type="button" onClick={InsitateBooking} className='bg-violet-800 text-white rounded text-lg font-semibold w-full mt-4 py-2'>Make Payment</button>
+                            </div>
                         </div>
                     </div>
-                    <button type="button" className='bg-violet-800 text-white rounded text-lg font-semibold w-full mt-4 py-2'>Make Payment</button>
-                </div>
-            </div>
+            }
         </div>
     );
 }

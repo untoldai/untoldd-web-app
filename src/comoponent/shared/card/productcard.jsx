@@ -75,14 +75,14 @@ const Productcard = ({ product, isLoading }) => {
                             >
                                 <FaEye className='text-xl' /> View
                             </button>
-                            <button
+                            {/* <button
                                 onClick={handleAddToCart}
                                 className={`mt-4 flex items-center justify-center gap-2 w-full py-2 rounded-md font-bold transition duration-300 ${isAdded ? 'bg-green-500 text-white' : 'border-2 text-black'} ${isAdded ? 'hover:bg-green-600' : 'hover:bg-gray-100'}`}
                                 disabled={isAdded} // Disable the button if the product is added
                             >
                                 <FaShoppingCart />
                                 {isAdded ? ' Added' : ' Add to Cart'}
-                            </button>
+                            </button> */}
                         </div>
                     </div>
             }

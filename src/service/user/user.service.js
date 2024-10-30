@@ -2,7 +2,7 @@ import { getBaseDomain } from "../../handler/domainhandler";
 import { getRequest, postRequest, putRequest } from "../../handler/request";
 import { getHeaderConfig } from "../../utils/headerconfig";
 import { getUserToken } from "../../utils/tokenStorage";
-const token = getUserToken();
+
 
 export const registerUserService = async (payload) => {
     try {
@@ -32,9 +32,10 @@ export const LoginserService = async (payload) => {
 
 export const getUserProfileService = async () => {
     try {
+
         const response = await getRequest({
             url: getBaseDomain() + "auth/profile",
-            headers: getHeaderConfig(token)
+            headers: getHeaderConfig(getUserToken())
         });
         return response;
     } catch (error) {
@@ -47,7 +48,7 @@ export const addNewAddressService = async (data) => {
     try {
         const response = await postRequest({
             url: getBaseDomain() + "user/address/create",
-            headers: getHeaderConfig(token),
+            headers: getHeaderConfig(getUserToken()),
             data: data
         });
         return response;
@@ -55,12 +56,12 @@ export const addNewAddressService = async (data) => {
         return error;
     }
 }
-export const updateAddressService = async (data,id) => {
+export const updateAddressService = async (data, id) => {
     try {
         const response = await putRequest({
             url: getBaseDomain() + `user/address/update?id=${id}`,
             data: data,
-            headers: getHeaderConfig(token)
+            headers: getHeaderConfig(getUserToken())
         });
         return response;
     } catch (error) {
@@ -72,7 +73,7 @@ export const getAddressListsService = async () => {
     try {
         const response = await getRequest({
             url: getBaseDomain() + "user/address/lists",
-            headers: getHeaderConfig(token)
+            headers: getHeaderConfig(getUserToken())
         });
         return response;
     } catch (error) {
@@ -83,8 +84,62 @@ export const setDefaultAddressService = async (id) => {
     try {
         const response = await postRequest({
             url: getBaseDomain() + `user/address/set-default?id=${id}`,
-            headers: getHeaderConfig(token),
-            
+            headers: getHeaderConfig(getUserToken())
+
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+// service for order 
+
+export const createOrderService = async (payload) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + "order/create",
+            headers: getHeaderConfig(getUserToken()),
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const confirmOrderService = async (payload, orderId) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + `order/update?orderId=${orderId}`,
+            headers: getHeaderConfig(getUserToken()),
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+// payment 
+export const intiatePaymentService = async (payload) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + "payment/initate",
+            headers: getHeaderConfig(getUserToken()),
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const verifyPaymentPaymentService = async (payload) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + "payment/verify",
+            headers: getHeaderConfig(getUserToken()),
+            data: payload
         });
         return response;
     } catch (error) {

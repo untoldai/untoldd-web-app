@@ -17,25 +17,28 @@ const UserAuthLayout = ({children, slug = "#" }) => {
         const fetchUserProfile = async () => {
             try {
                 const authToken = getUserToken();
+                
     
                 if (!authToken) {
                     console.log('not found');
                     navigate('/auth/user-login');
                     return;
                 }
-    
+                //console.log(authToken)
                 const response = await getUserProfileService();
-                console.log(response);
+               // console.log(response);
     
                 if (response.data !== null && response.data.success === true) {
                     console.log(slug);
                     dispatch(loginUser(response.data.data));
                     setIsLoading(false);
                     navigate(slug);
+                    return
                 } else {
                     setIsLoading(false);
                     removeUserToken();
                     navigate('/auth/user-login');
+                    return
                 }
             } catch (err) {
                 setError("An error occurred during authentication.");
@@ -53,7 +56,7 @@ const UserAuthLayout = ({children, slug = "#" }) => {
         <>
             {isLoading ? (
                 <div className='w-full h-full flex justify-center items-center '>
-                    Loading
+                    <AuthSkeltion />
 
                 </div>
 

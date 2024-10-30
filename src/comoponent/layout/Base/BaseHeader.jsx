@@ -46,14 +46,14 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                     }
 
                     <ToolTipButton Icon={FaHeart} title={"WishList"} handleClick={() => removeUserToken()} />
-                    <Link to="/app/cart" className="text-white mb-1 flex items-center gap-2">
+                    {/* <Link to="/app/cart" className="text-white mb-1 flex items-center gap-2">
                         <FaShoppingCart />
                         {getTotalProductCount() > 0 && (
                             <span className="bg-red-600 text-white rounded-full px-2 text-xs ml-1">
                                 {getTotalProductCount()}
                             </span>
                         )}
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
             <div className={` py-2 z-50  px-3 h-16 fixed top-10 left-0 w-full transition-all duration-300  ${isScrolled ? 'bg-white shadow-lg !top-0' : 'bg-white  '}`}>

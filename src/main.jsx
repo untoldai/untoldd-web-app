@@ -44,6 +44,7 @@ import UserOrderLists from './pages/user/OrderLists.jsx';
 import ProductDetails from './pages/kidsware/ProductDetails.jsx';
 import CheckoutPage from './pages/kidsware/CheckOut.jsx';
 import UserAuthLayout from './comoponent/authenticate/UserAuthLayout.jsx';
+import OrderConfrom from './pages/kidsware/OrderConfrom.jsx';
 
 const router = createBrowserRouter([
   {
@@ -117,6 +118,12 @@ const router = createBrowserRouter([
         path:"/app/user-profile",
         element:<UserAuthLayout slug='/app/user-profile'>
           <UserProfile />
+        </UserAuthLayout>
+      },
+      {
+        path:"/app/order/conform",
+        element:<UserAuthLayout slug='/app/order/conform'>
+          <OrderConfrom />
         </UserAuthLayout>
       },
       {

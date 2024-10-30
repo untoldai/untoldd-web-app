@@ -3,6 +3,7 @@ import BreadCrum from '../../comoponent/shared/BreadCrum';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getProductDescriptionService } from '../../service/product/product.service';
+import { errorToast } from '../../hooks/toast.hooks';
 
 const ProductDetails = () => {
     const [selectedSize, setSelectedSize] = useState('');
@@ -24,10 +25,7 @@ const ProductDetails = () => {
         { id: 3, user: 'Charlie', text: 'Loved it! Will buy again.' },
     ];
 
-    const handleAddToCart = () => {
-        console.log(`Added ${selectQty} x ${selectedSize} ${selectedColor} to the cart`);
-    };
-
+   
     async function getProductDetails() {
         try {
             const response = await getProductDescriptionService(paramValue);
@@ -38,7 +36,58 @@ const ProductDetails = () => {
             console.error(error);
         }
     }
-
+    const handleAddToCart = () => {
+        // Check if size and color are selected
+        if (selectedSize === "") {
+            return errorToast("Please select size");
+        }
+        if (selectedColor === "") {
+            return errorToast("Please select color");
+        }
+    
+        // Retrieve existing cart from local storage or initialize an empty array
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+        // Check if the product is already in the cart
+        const existingProductIndex = existingCart.findIndex(item => item.productId === product._id);
+    
+        if (existingProductIndex !== -1) {
+            // If the product exists, update all relevant details
+            existingCart[existingProductIndex] = {
+                productId: product._id,
+                name: product.name,
+                price: product.price,
+                quantity: selectQty, // Update to the new selected quantity
+                image: product?.images[0].url,
+                size: selectedSize,
+                color: selectedColor // Update the color if necessary
+            };
+              // Navigate to checkout
+        navigate('/app/checkout');
+        return;
+        } else {
+            // If not, add the new product to the cart
+            existingCart.push({
+                productId: product._id,
+                name: product.name,
+                price: product.price,
+                quantity: selectQty,
+                image: product?.images[0].url,
+                size: selectedSize,
+                color: selectedColor // Add color to the cart item if necessary
+            });
+        }
+    
+        // Save the updated cart back to local storage
+        localStorage.setItem('cart', JSON.stringify(existingCart));
+    
+        // Optionally, provide visual feedback (e.g., toast notification)
+        successToast("Product added/updated in cart");
+    
+        // Navigate to checkout
+        navigate('/app/checkout');
+    };
+    
     useEffect(() => {
         getProductDetails();
     }, [paramValue]);
@@ -119,15 +168,15 @@ const ProductDetails = () => {
                                 />
                             </div>
                             <div className='mt-6 flex gap-4'>
-                                <button
-                                    onClick={handleAddToCart}
+                                {/* <button
+                                    onClick={}
                                     className='bg-black shadow-sm text-white px-4 py-2 rounded'
                                 >
                                     Add to Cart
-                                </button>
+                                </button> */}
                                 <button
                                     className='bg-black shadow-sm text-white px-4 py-2 rounded'
-                                    onClick={() => navigate(`/app/checkout?products=${product?._id}`)}
+                                    onClick={handleAddToCart}
                                 >
                                     Buy Now
                                 </button>
