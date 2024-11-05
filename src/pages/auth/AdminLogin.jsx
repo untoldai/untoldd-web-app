@@ -70,7 +70,9 @@ const AdminLogin = () => {
         successToast(response.data.message);
         dispatch(loginAdmin(response.data.data.data));
         setAdminToken(response.data.data.accessToken);
-        navigate('/admin/dashboard');
+        setTimeout(()=>{
+          navigate('/admin/dashboard');
+        },1500)
         return;
 
       }

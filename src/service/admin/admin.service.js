@@ -57,7 +57,7 @@ export const addProductService = async (payload) => {
 export const getAllProductService = async ({ page, limit = 20 }) => {
     try {
         const response = await getRequest({
-            url: getBaseDomain() + "product/all-product",
+            url: getBaseDomain() + "product/admin/all-product",
             headers: getHeaderConfig(token)
         });
         return response;

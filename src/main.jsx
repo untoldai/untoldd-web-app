@@ -45,6 +45,8 @@ import ProductDetails from './pages/kidsware/ProductDetails.jsx';
 import CheckoutPage from './pages/kidsware/CheckOut.jsx';
 import UserAuthLayout from './comoponent/authenticate/UserAuthLayout.jsx';
 import OrderConfrom from './pages/kidsware/OrderConfrom.jsx';
+import MyOrder from './pages/kidsware/MyOrder.jsx';
+import OrderDetails from './pages/kidsware/OrderDetails.jsx';
 
 const router = createBrowserRouter([
   {
@@ -115,15 +117,27 @@ const router = createBrowserRouter([
           </UserAuthLayout>
       },
       {
-        path:"/app/user-profile",
-        element:<UserAuthLayout slug='/app/user-profile'>
+        path: "/app/user-profile",
+        element: <UserAuthLayout slug='/app/user-profile'>
           <UserProfile />
         </UserAuthLayout>
       },
       {
-        path:"/app/order/conform",
-        element:<UserAuthLayout slug='/app/order/conform'>
+        path: "/app/order/conform",
+        element: <UserAuthLayout slug='/app/order/conform'>
           <OrderConfrom />
+        </UserAuthLayout>
+      },
+      {
+        path: "/app/my-orders",
+        element: <UserAuthLayout slug='/app/my-orders'>
+          <MyOrder />
+        </UserAuthLayout>
+      },
+      {
+        path: "/app/my-orders/details",
+        element: <UserAuthLayout slug='/app/my-orders/details'>
+          <OrderDetails />
         </UserAuthLayout>
       },
       {
@@ -220,7 +234,7 @@ const router = createBrowserRouter([
       }
     ]
   },
-  
+
 ])
 
 createRoot(document.getElementById('root')).render(
@@ -234,7 +248,7 @@ createRoot(document.getElementById('root')).render(
         newestOnTop={false}
         closeOnClick
         rtl={false}
- 
+
       />
     </Provider>
   </StrictMode>,

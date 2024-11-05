@@ -120,6 +120,20 @@ export const confirmOrderService = async (payload, orderId) => {
         return error;
     }
 }
+
+// service for get orderLists
+export const getOrderListService = async () => {
+    try {
+        const response = await getRequest({
+            url: getBaseDomain() + `order/users/orders`,
+            headers: getHeaderConfig(getUserToken()),
+
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 // payment 
 export const intiatePaymentService = async (payload) => {
     try {

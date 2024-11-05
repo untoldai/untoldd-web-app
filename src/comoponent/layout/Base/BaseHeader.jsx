@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UntloddLogo } from '../../../assets';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaHeart, FaPhone, FaSearch, FaShoppingCart, FaSign, FaSignInAlt, FaSignOutAlt, FaTimes, FaUser, FaUserCircle } from 'react-icons/fa';
+import { FaEnvelope, FaHeart, FaPhone, FaSearch, FaShoppingBag, FaShoppingCart, FaSign, FaSignInAlt, FaSignOutAlt, FaTimes, FaUser, FaUserCircle } from 'react-icons/fa';
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import ToolTipButton from '../../tooltip/ToolTipBtn';
@@ -10,7 +10,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isUserHovered, setIsUserHovered] = useState(false);
     const user = useSelector((state) => state.user);
-     const navigate=useNavigate();
+    const navigate = useNavigate();
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
     };
@@ -39,6 +39,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                                 <ToolTipButton Icon={FaUser} title={"Profile"} handleClick={() => navigate("/app/user-profile")} />
 
                                 <ToolTipButton Icon={FaSignOutAlt} title={"Logout"} handleClick={() => removeUserToken()} />
+                                <ToolTipButton Icon={FaShoppingBag} title={"Orders"} handleClick={() => navigate("/app/my-orders")} />
                             </div>
 
                             :
