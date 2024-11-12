@@ -4,7 +4,7 @@ import ShadowCard from '../../comoponent/shared/card/ShadowCard';
 import { useNavigate } from 'react-router-dom';
 import { getOrderListService } from '../../service/user/user.service';
 import { FaShoppingCart } from 'react-icons/fa';
-
+import moment from "moment"
 
 const MyOrder = () => {
     const [filter, setFilter] = useState('all');
@@ -96,23 +96,33 @@ const ProductListCard = ({ order, updateRating }) => {
         updateRating(userRating);
         setUserRating(0); // Reset user rating after submission
     };
-
+    const calculateDeliveryExceptionDate = (orderDate) => {
+        // Parse the order date using moment (assuming it's in ISO format or any valid format)
+        const orderMoment = moment(orderDate);
+      
+        // Calculate the 7 to 9 days range
+        const minDeliveryDate = orderMoment.add(7, 'days').format('D-M-YYYY');
+        const maxDeliveryDate = orderMoment.add(2, 'days').format('D-M-YYYY'); // Adding 9 days total (7 + 2)
+      
+        return `${minDeliveryDate} - ${maxDeliveryDate}`;
+      };
     return (
         <ShadowCard >
         <div
-            onClick={() => navigate(`/app/my-orders/details?orderId=${order.id}`)}
+            
             className="flex p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer"
         >
             <img
                 src={order?.productDetails?.images?.url} // Ensure to access the first image in case of an array
                 alt="Product"
+                onClick={() => navigate(`/app/my-orders/details?orderId=${order._id}`)}
                 className="h-32 w-32 object-cover rounded-md border border-gray-200 mr-4"
             />
             <div className="flex flex-col justify-between">
                 <div>
-                    <p className="text-lg font-semibold text-gray-800 mb-1">{order.productDetails.name}</p>
-                    <p className="text-gray-600 mb-2">{order.productDetails.description.substring(0, 50)}...</p>
-                    <p className="text-sm text-gray-500">Delivered on {new Date(order.date).toLocaleDateString()}</p>
+                    <p className="text-lg font-semibold text-gray-800 mb-1">{order?.productDetails.name}</p>
+                    <p className="text-gray-600 mb-2">{order?.productDetails.description.substring(0, 50)}...</p>
+                    <p className="text-sm text-gray-500">Delivered on {calculateDeliveryExceptionDate(order?.orderDate)}</p>
                 </div>
                 <div className="flex items-center mt-2">
                     <StarRatings

@@ -134,6 +134,19 @@ export const getOrderListService = async () => {
         return error;
     }
 }
+// get order details service 
+export const getOrderDetailsService =async (orderId) => {
+    try {
+        const response = await getRequest({
+            url: getBaseDomain() + `order/users/order-details?orderId=${orderId}`,
+            headers: getHeaderConfig(getUserToken()),
+
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 // payment 
 export const intiatePaymentService = async (payload) => {
     try {

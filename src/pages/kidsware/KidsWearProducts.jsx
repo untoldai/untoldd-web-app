@@ -66,7 +66,7 @@ const KidsWearAllProducts = () => {
     const getProductS = async () => {
         try {
             setIsLoading(true);
-            const response = await getProductByCategory("Kids Wear");
+            const response = await getProductByCategory("");
             if (response.data && response.data.statusCode === 200) {
                 setIsLoading(false);
                 setProducts(response.data.data.products);

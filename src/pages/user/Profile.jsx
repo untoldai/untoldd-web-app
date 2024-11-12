@@ -1,24 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, startTransition } from 'react';
 import { useSelector } from 'react-redux';
 import ShadowCard from '../../comoponent/shared/card/ShadowCard';
 import AddressList from '../../comoponent/specific/form/AddressLists';
 import { getUserProfileService } from '../../service/user/user.service';
 
-
 const UserProfile = () => {
+    const [profileDetails, setProfileDetails] = useState(null);
+    const [loading, setLoading] = useState(true); // Add loading state
 
-    const [profileDetails,setProfileDetails]=useState(null);
-    const getProfileDetails=async()=>{
+    const getProfileDetails = async () => {
         try {
-            const response=await getUserProfileService();
-            setProfileDetails(response.data.data)
+            const response = await getUserProfileService();
+            startTransition(() => { 
+                setProfileDetails(response.data.data);
+            });
         } catch (error) {
-            
+            console.error(error);
+        } finally {
+            setLoading(false);
         }
-    }
-    useEffect(()=>{
+    };
+
+    useEffect(() => {
         getProfileDetails();
-    },[])
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;  // Show loading state while data is being fetched
+    }
+
     return (
         <>
             <div className="w-full flex-col sm:flex-row sm:w-[83%] ml-0 sm:ml-[15%] bg-gray-100 flex items-center justify-around">
@@ -30,7 +40,9 @@ const UserProfile = () => {
                             className="w-24 h-24 rounded-full object-cover"
                         />
                         <div>
-                            <h1 className="text-2xl font-semibold text-gray-800">{profileDetails && profileDetails?.personal_details.first_name +profileDetails&& profileDetails?.personal_details.last_name}</h1>
+                            <h1 className="text-2xl font-semibold text-gray-800">
+                                {profileDetails && profileDetails?.personal_details.first_name + " " + profileDetails?.personal_details.last_name}
+                            </h1>
                             <p className="text-gray-600">Admin</p>
                         </div>
                     </div>
@@ -47,10 +59,6 @@ const UserProfile = () => {
                                     <label className="block text-gray-700">Phone Number</label>
                                     <p className="text-gray-900">{profileDetails && profileDetails?.contact.phone}</p>
                                 </div>
-                                {/* <div>
-                                    <label className="block text-gray-700">Address</label>
-                                    <p className="text-gray-900">1234 Elm Street, Springfield, IL, 62704</p>
-                                </div> */}
                             </div>
                         </div>
 
@@ -85,9 +93,8 @@ const UserProfile = () => {
                     <AddressList />
                 </ShadowCard>
             </div>
-
         </>
-    )
-}
+    );
+};
 
-export default UserProfile
+export default UserProfile;

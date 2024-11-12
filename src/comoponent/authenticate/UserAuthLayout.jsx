@@ -32,7 +32,9 @@ const UserAuthLayout = ({children, slug = "#" }) => {
                     console.log(slug);
                     dispatch(loginUser(response.data.data));
                     setIsLoading(false);
-                    navigate(slug);
+                    if (window.location.pathname !== slug) {
+                        navigate(slug);
+                    }
                     return
                 } else {
                     setIsLoading(false);

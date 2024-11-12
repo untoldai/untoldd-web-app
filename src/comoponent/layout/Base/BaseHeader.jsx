@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UntloddLogo } from '../../../assets';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaHeart, FaPhone, FaSearch, FaShoppingBag, FaShoppingCart, FaSign, FaSignInAlt, FaSignOutAlt, FaTimes, FaUser, FaUserCircle } from 'react-icons/fa';
+import { FaEnvelope, FaHeart, FaHome, FaPhone, FaSearch, FaShoppingBag, FaShoppingCart, FaSign, FaSignInAlt, FaSignOutAlt, FaTimes, FaUser, FaUserCircle } from 'react-icons/fa';
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import ToolTipButton from '../../tooltip/ToolTipBtn';
@@ -27,12 +27,12 @@ const BaseHeader = ({ isScrolled, navItems }) => {
     return (
         <div>
 
-            <div className='h-10 w-full bg-[#7E33E0] text-white flex justify-around items-center'>
+            <div className='h-10 w-full bg-black text-white flex justify-around items-center'>
                 <div className='flex gap-5'>
                     <p className='flex gap-3 items-center font-bold'><FaEnvelope />admin@untoldd.com </p>
                     <p className='flex gap-3 items-center font-bold'><FaPhone />+91-29003837392 </p>
                 </div>
-                <div className='flex gap-5'>
+                <div className='hidden md:flex gap-5'>
                     {
                         user && user?.isLoggedIn || getUserToken() ?
                             <div className='flex gap-3 items-center'>
@@ -107,7 +107,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                         </div> */}
                         <div className='bg-white flex items-center rounded-md shadow-sm h-8'>
                             <input type="" name="" placeholder='Search Product' value="" className='px-2 border-[1px] border-neutral-300 outline-none h-full' />
-                            <FaSearch className='bg-[#FB2E86] h-8 shadow-sm w-10 text-xs p-1  text-white ' />
+                            <FaSearch className='bg-[#000] h-8 shadow-sm w-10 text-xs p-1  text-white ' />
                         </div>
                         <button className="md:hidden text-black ml-auto" onClick={toggleNav}>
                             {isNavOpen ? <FaTimes /> : '☰'}
@@ -135,6 +135,43 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                     )}
                 </div>
             </div>
+            <div className='bg-white h-16 text-black z-50 shadow-2xl block md:hidden fixed bottom-0 w-full p-4 rounded-tl-xl rounded-tr-xl'>
+                <div className='flex items-center justify-around'>
+
+
+                    <Link to="/app" className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out">
+                        <FaHome className="text-xl" />
+
+                    </Link>
+                    {user && user?.isLoggedIn || getUserToken() ? (
+                        <div className='flex gap-10  justify-between items-center mt-3'>
+                            {/* Profile Icon Button */}
+                            <Link to="/app/user-profile" className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out">
+                                <FaUser className="text-xl" />
+
+                            </Link>   <button handleClick={() => {
+                                removeUserToken()
+                                navigate("/aut/user-login")
+                            }} className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out">
+                                <FaSignOutAlt className="text-xl" />
+
+                            </button>
+                            <Link to="/app/my-orders" className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out">
+                                <FaShoppingBag className="text-xl" />
+
+                            </Link>
+
+                        </div>
+                    ) : (
+                        <Link to="/auth/user-login" className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out mt-3">
+                            <FaUser className="text-xl" />
+                            <span className="font-semibold">Login</span>
+                        </Link>
+                    )}
+                </div>
+            </div>
+
+
         </div>
     );
 }
