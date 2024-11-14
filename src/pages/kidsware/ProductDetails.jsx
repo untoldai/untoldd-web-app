@@ -100,7 +100,7 @@ const ProductDetails = () => {
             <div className='flex flex-col md:flex-row gap-4 md:gap-8'>
               {/* Image Gallery Section */}
               <div className='flex flex-col-reverse md:flex-row w-full md:w-[45%]'>
-                <div className='flex justify-around gap-2'>
+                <div className='flex flex-row md:flex-col justify-around gap-2'>
                   {product?.images?.map((img, index) => (
                     <img
                       key={img._id}
