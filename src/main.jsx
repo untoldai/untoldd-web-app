@@ -47,6 +47,8 @@ import UserAuthLayout from './comoponent/authenticate/UserAuthLayout.jsx';
 import OrderConfrom from './pages/kidsware/OrderConfrom.jsx';
 import MyOrder from './pages/kidsware/MyOrder.jsx';
 import OrderDetails from './pages/kidsware/OrderDetails.jsx';
+import InfluncerLogin from './pages/auth/InfluencerLogin.jsx';
+import InfluncerRegisteration from './pages/auth/InfluncerRegisteration.jsx';
 
 const router = createBrowserRouter([
   {
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
   {
     path: '/auth/user-register',
     element: <UserRegister />
+  },
+  {
+    path: "/influncer/login",
+    element: <InfluncerLogin />
+  },
+  {
+    path: "/influncer/signup",
+    element: <InfluncerRegisteration />
   },
   {
 

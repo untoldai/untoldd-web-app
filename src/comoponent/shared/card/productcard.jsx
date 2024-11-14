@@ -51,6 +51,7 @@ const Productcard = ({ product, isLoading }) => {
                             style={{ mixBlendMode: 'multiply' }}
                             alt='Cool T-shirt'
                             className='w-full h-[200px]'
+                            onClick={() => navigate(`/app/product-details?id=${product?._id}`)}
                         />
                         <div className='mt-2'>
                             <p className='text-xl font-medium'>{product?.name}</p>

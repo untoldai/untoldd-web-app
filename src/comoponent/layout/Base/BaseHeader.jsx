@@ -106,7 +106,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                             )}
                         </div> */}
                         <div className='bg-white flex items-center rounded-md shadow-sm h-8'>
-                            <input type="" name="" placeholder='Search Product' value="" className='px-2 border-[1px] border-neutral-300 outline-none h-full' />
+                            <input type="" name="" placeholder='Search Product' value="" className='px-2 w-[150px] md:w-full border-[1px] border-neutral-300 outline-none h-full' />
                             <FaSearch className='bg-[#000] h-8 shadow-sm w-10 text-xs p-1  text-white ' />
                         </div>
                         <button className="md:hidden text-black ml-auto" onClick={toggleNav}>
