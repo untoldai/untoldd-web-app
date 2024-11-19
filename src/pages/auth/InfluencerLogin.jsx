@@ -7,15 +7,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { errorToast, successToast } from '../../hooks/toast.hooks';
 
 import { useDispatch } from 'react-redux';
-import { setUserToken } from '../../utils/tokenStorage';
+import { setInfluncerToken } from '../../utils/tokenStorage';
 import PendualLoader from '../../comoponent/Loader/PendualLoader';
-import { loginUser } from '../../redux/slice/user.slice';
-import { LoginserService } from '../../service/user/user.service';
+
+import { LoginInfluncerService } from '../../service/influncer/influncer.service';
+import { loginInfluncer } from '../../redux/slice/influncer.slice';
 
 const InfluncerLogin = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const dispatch = useDispatch();
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -37,17 +38,17 @@ const InfluncerLogin = () => {
       return errorToast("Password required")
     }
     setIsLoading(true)
-    const response = await LoginserService(loginForm);
-    
+    const response = await LoginInfluncerService(loginForm);
+
     if (response.data && response.data.statusCode === 200) {
-      
+
       setIsLoading(false)
-      
-      dispatch(loginUser(response.data.data.data));
-      setUserToken(response.data.data.accessToken)
+
+      dispatch(loginInfluncer(response.data.data.data));
+      setInfluncerToken(response.data.data.accessToken)
       successToast(response.data.message)
-    
-      return  navigate('/app');;
+
+      return navigate('/influncer');;
     }
     setIsLoading(false)
     return errorToast(response.error.message)
@@ -88,7 +89,7 @@ const InfluncerLogin = () => {
                   />
                   <Button handlClick={handleLogin} text={"Login"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
                   <span className='text-center text-xl text-neutral-500'>Or</span>
-                  <Button handlClick={() => navigate('/auth/influencer-register')} text={"Sign Up"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
+                  <Button handlClick={() => navigate('/influncer/signup')} text={"Sign Up"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
 
                 </div>
             }

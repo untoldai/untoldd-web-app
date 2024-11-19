@@ -49,11 +49,21 @@ import MyOrder from './pages/kidsware/MyOrder.jsx';
 import OrderDetails from './pages/kidsware/OrderDetails.jsx';
 import InfluncerLogin from './pages/auth/InfluencerLogin.jsx';
 import InfluncerRegisteration from './pages/auth/InfluncerRegisteration.jsx';
+import InfluncerLayout from './comoponent/layout/InfluncerLayout.jsx';
+import InfluencerHome from './pages/influnencer/InfluncerHome.jsx';
+import InfluncerProfile from './pages/influnencer/InfluncerProfile.jsx';
+import InfluncerAuthLayout from './comoponent/authenticate/InfluncerAuthLayout.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />
+    element: <KidsWearLayout />,
+    children: [
+      {
+        path: "/",
+        element: <KidsWareHomepage />,
+      }
+    ]
   },
   {
     path: "/about-us",
@@ -99,6 +109,24 @@ const router = createBrowserRouter([
     element: <CreatePassword />
   },
   // kids ware routing
+  {
+    path: "/influncer",
+    element: <InfluncerLayout />,
+    children: [
+      {
+        path: "/influncer",
+        element: <InfluencerHome />
+      },
+      {
+        path: "/influncer/profile",
+        element: (
+          <InfluncerAuthLayout>
+            <InfluncerProfile />
+          </InfluncerAuthLayout>
+        )
+      },
+    ]
+  },
   {
     path: "/app",
     element: <KidsWearLayout />,

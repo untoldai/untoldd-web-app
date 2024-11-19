@@ -1,13 +1,13 @@
 import { getBaseDomain } from "../../handler/domainhandler";
 import { getRequest, postRequest, putRequest } from "../../handler/request";
 import { getHeaderConfig } from "../../utils/headerconfig";
-import { getUserToken } from "../../utils/tokenStorage";
+import { getInfluncerToken, getUserToken } from "../../utils/tokenStorage";
 
 
-export const registerUserService = async (payload) => {
+export const registerInfluncerService = async (payload) => {
     try {
         const response = await postRequest({
-            url: getBaseDomain() + "auth/register",
+            url: getBaseDomain() + "auth/influncer/register",
             data: payload,
             headers: null
         });
@@ -18,10 +18,10 @@ export const registerUserService = async (payload) => {
     }
 }
 
-export const LoginserService = async (payload) => {
+export const LoginInfluncerService = async (payload) => {
     try {
         const response = await postRequest({
-            url: getBaseDomain() + "auth/login",
+            url: getBaseDomain() + "auth/influncer/login",
             data: payload,
             headers: null
         });
@@ -31,12 +31,24 @@ export const LoginserService = async (payload) => {
     }
 }
 
-export const getUserProfileService = async () => {
+export const getInfluncerProfileService = async () => {
+    try {
+console.log(getInfluncerToken())
+        const response = await getRequest({
+            url: getBaseDomain() + "auth/influncer/profile",
+            headers: getHeaderConfig(getInfluncerToken())
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const getInfluncerProfileDetailsService = async () => {
     try {
 
         const response = await getRequest({
-            url: getBaseDomain() + "auth/profile",
-            headers: getHeaderConfig(getUserToken())
+            url: getBaseDomain() + "auth/influncer/profile/details",
+            headers: getHeaderConfig(getInfluncerToken())
         });
         return response;
     } catch (error) {
@@ -136,7 +148,7 @@ export const getOrderListService = async () => {
     }
 }
 // get order details service 
-export const getOrderDetailsService =async (orderId) => {
+export const getOrderDetailsService = async (orderId) => {
     try {
         const response = await getRequest({
             url: getBaseDomain() + `order/users/order-details?orderId=${orderId}`,

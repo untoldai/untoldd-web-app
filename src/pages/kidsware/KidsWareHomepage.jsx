@@ -83,7 +83,7 @@ const KidsWareHomepage = () => {
       <div className='p-5 my-10 '>
         <p className='text-3xl font-bold  px-10 text-center'>Top Selling Products</p>
 
-        <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-10 '>
+        <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-10  px-0 sm:px-5'>
           {
             isLoading ?
               <CardSkelton />
@@ -134,8 +134,9 @@ const WhyUntoldd = () => {
             <path d="M45.0383 15.7016C45.0383 16.2354 44.606 16.6679 44.0723 16.6679H41.1094C40.5758 16.6679 40.1433 16.2355 40.1433 15.7016V9.90439C40.1433 9.37073 40.5758 8.93834 41.1094 8.93834H44.0723C44.606 8.93834 45.0383 9.37073 45.0383 9.90439C45.0383 10.4382 44.606 10.8707 44.0723 10.8707H42.0755V11.837H43.2994C43.833 11.837 44.2654 12.2694 44.2654 12.8032C44.2654 13.337 43.833 13.7695 43.2994 13.7695H42.0755V14.7356H44.0723C44.606 14.7355 45.0383 15.1679 45.0383 15.7016Z" fill="#FFF9EB" />
             <path d="M51.0339 15.7016C51.0339 16.2354 50.6016 16.6679 50.0679 16.6679H47.105C46.5714 16.6679 46.1389 16.2355 46.1389 15.7016V9.90439C46.1389 9.37073 46.5714 8.93834 47.105 8.93834H50.0679C50.6016 8.93834 51.0339 9.37073 51.0339 9.90439C51.0339 10.4382 50.6016 10.8707 50.0679 10.8707H48.0711V11.837H49.295C49.8286 11.837 50.261 12.2694 50.261 12.8032C50.261 13.337 49.8286 13.7695 49.295 13.7695H48.0711V14.7356H50.0679C50.6016 14.7355 51.0339 15.1679 51.0339 15.7016Z" fill="#FFF9EB" />
           </svg>
-          <p className='text-xl font-semibold '>Fast Delivery</p>
-          <span className='text-slate-400 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.</span>
+          <p className="text-xl font-semibold text-gray-800">Fast Delivery</p>
+          <span className="text-gray-500 text-lg">Enjoy fast and reliable delivery with every order. We ensure your products arrive on time, every time.</span>
+
 
         </div>
         <div className='flex flex-col justify-around items-center text-center bg-white text-black rounded-md shadow-2xl  w-[95%] sm:w-72 h-60 p-4'>
@@ -164,8 +165,9 @@ const WhyUntoldd = () => {
             </defs>
           </svg>
 
-          <p className='text-xl font-semibold '>Unique</p>
-          <span className='text-slate-400 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.</span>
+          <p className="text-xl font-semibold text-gray-800">Unique</p>
+          <span className="text-gray-500 text-lg">Discover our one-of-a-kind products, crafted to stand out and meet your needs with unparalleled quality and design.</span>
+
 
         </div>
         <div className='flex flex-col justify-around items-center text-center bg-white text-black rounded-md shadow-2xl  w-[95%] sm:w-72 h-60 p-4'>
@@ -191,11 +193,11 @@ const WhyUntoldd = () => {
             </defs>
           </svg>
 
-          <p className='text-xl font-semibold '>24*7 support</p>
-          <span className='text-slate-400 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.</span>
+          <p className="text-xl font-semibold text-gray-800">24/7 Support</p>
+          <span className="text-gray-500 text-lg">Our dedicated support team is available around the clock to assist you with any questions or concerns, anytime, anywhere.</span>
 
         </div>
-      
+
       </div>
     </div>
   )

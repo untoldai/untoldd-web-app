@@ -18,3 +18,14 @@ export const getUserToken = () => {
 export const removeUserToken = () => {
     return Cookies.remove('userToken');
 }
+
+
+export const setInfluncerToken = (token) => {
+    return Cookies.set('influncerToken', token, { expires: 0.125 })
+}
+export const getInfluncerToken = () => {
+    return Cookies.get('influncerToken');
+}
+export const removeInfluncerToken = () => {
+    return Cookies.remove('influncerToken');
+}

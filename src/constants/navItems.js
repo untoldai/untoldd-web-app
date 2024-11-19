@@ -230,7 +230,33 @@ export const kidsWearNavItems = [
     slug: "/app/contact-us"
   }
 ]
-
+export const InfluncerNavItems = [
+  {
+    id: 0,
+    title: "Home",
+    slug: "/influncer"
+  },
+  {
+    id: 1,
+    title: "Products",
+    slug: "/influncer/all-products"
+  },
+  {
+    id: 2,
+    title: "Blogs",
+    slug: "/influncer/blogs"
+  },
+  {
+    id: 3,
+    title: "About Us",
+    slug: "/influncer/about-us"
+  },
+  {
+    id: 4,
+    title: "Contact us",
+    slug: "/influncer/contact-us"
+  }
+]
 export const beautyNavItems = [
   {
     id: 0,

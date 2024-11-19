@@ -102,6 +102,18 @@ export const getAllUserListsService = async (page, limit) => {
     }
 }
 
+//get influncer list 
+export const getAllInfluncerListsService = async (page, limit) => {
+    try {
+        const response = await getRequest({
+            url: getBaseDomain() + `auth/admin/influncer-lists?limit=${limit}&page=${page}`,
+            headers: getHeaderConfig(getAdminToken())
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 // service for get orderLists
 export const getOrderListServiceAdmin = async () => {
     try {

@@ -16,7 +16,7 @@ const AddProduct = () => {
     name: '',
     type: '',
     price: '',
-    description: value,
+    description: '',
     category: '',
     stock: '',
     brand: '',
@@ -149,10 +149,10 @@ const AddProduct = () => {
   <div className="mb-4" key={field}>
     <label className="block text-gray-700 font-medium">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
     {field === 'description' ? (
-      <ReactQuill theme="snow" value={value} onChange={setValue} className='h-full mb-3' />
+      <ReactQuill theme="snow" value={formData.description}        onChange={(value) => setFormData((prevData) => ({ ...prevData, description: value }))} className='h-full mb-3' />
     ) : (
       <input 
-        type={field === 'price' ? 'number' : field === 'video_url' ? 'url' : 'text'} 
+        type={field === 'price' ? 'number' : field === 'video_url' ? 'text' : 'text'} 
         name={field} 
         value={formData[field]} 
         onChange={handleChange} 
