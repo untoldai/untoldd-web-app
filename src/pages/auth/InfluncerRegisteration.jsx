@@ -31,7 +31,7 @@ const InfulencerRegister = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // First name, last name and phone validation
     if (!registerForm.firstname) newErrors.firstname = 'First name is required.';
     if (!registerForm.lastname) newErrors.lastname = 'Last name is required.';
@@ -42,7 +42,7 @@ const InfulencerRegister = () => {
 
     // Date of birth validation (no longer needed as we set a default)
     if (!registerForm.dob) newErrors.dob = 'Date of birth is required.';
-    
+
     // Email validation
     if (!registerForm.email) {
       newErrors.email = 'Email is required.';
@@ -96,10 +96,14 @@ const InfulencerRegister = () => {
         const resp = await registerInfluncerService(payload);
         setIsLoading(false);
 
-        if (resp.data && resp.data.statusCode === 409) {
-          errorToast(resp.data.message);
+        if (resp.error && resp.error.statusCode === 409) {
+          errorToast(resp.error.message);
           return;
         }
+        if (resp.error !== null && resp.error.statusCode === 500) {
+          errorToast(resp.error.message); return
+        }
+
 
         if (resp.data && resp.data.statusCode === 201) {
           successToast(resp.data.message);
@@ -189,7 +193,7 @@ const InfulencerRegister = () => {
                     maxLength="10"
                   />
                   {errors.phone && <span className='text-red-500'>{errors.phone}</span>}
-                  <span className='text-sm text-gray-500 mt-1'>Phone number must be exactly 10 digits.</span> 
+                  <span className='text-sm text-gray-500 mt-1'>Phone number must be exactly 10 digits.</span>
                 </div>
 
                 <div>
@@ -219,7 +223,7 @@ const InfulencerRegister = () => {
                   />
                   {errors.password && <span className='text-red-500'>{errors.password}</span>}
 
-                 <span className='text-sm text-gray-500 mt-1'>Password must be at least 8 characters long.</span> 
+                  <span className='text-sm text-gray-500 mt-1'>Password must be at least 8 characters long.</span>
                 </div>
 
                 <div>

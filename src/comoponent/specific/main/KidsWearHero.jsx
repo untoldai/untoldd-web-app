@@ -1,13 +1,15 @@
 import React from 'react';
-import { appColor } from '../../../style/style'; // Assuming this is being used elsewhere
-import { BeautyBanner1, UntolddBanner } from '../../../assets';
+import { SimplicBanner } from '../../../assets';
 
 const KidsWearHero = () => {
     return (
         <div 
             className='overflow-hidden h-full bg-[#FFFDF2] min-h-screen flex items-center bg-cover bg-center'
             style={{
-                backgroundImage: `url(${BeautyBanner1})`,
+                backgroundImage: `url(${SimplicBanner})`,
+                backgroundSize: 'cover', // Ensures the background image covers the entire container
+                backgroundPosition: 'center center', // Keeps the background centered
+                backgroundRepeat: 'no-repeat' // Prevents the background from repeating
             }}
         >
             <div className='mx-4 md:ml-36 mt-20'>

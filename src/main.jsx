@@ -53,6 +53,7 @@ import InfluncerLayout from './comoponent/layout/InfluncerLayout.jsx';
 import InfluencerHome from './pages/influnencer/InfluncerHome.jsx';
 import InfluncerProfile from './pages/influnencer/InfluncerProfile.jsx';
 import InfluncerAuthLayout from './comoponent/authenticate/InfluncerAuthLayout.jsx';
+import MyProduct from './pages/influnencer/MyProduct.jsx';
 
 const router = createBrowserRouter([
   {
@@ -115,13 +116,25 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/influncer",
-        element: <InfluencerHome />
+        element: (
+          <InfluncerAuthLayout>
+            <InfluencerHome />
+          </InfluncerAuthLayout>
+        )
       },
       {
         path: "/influncer/profile",
         element: (
           <InfluncerAuthLayout>
             <InfluncerProfile />
+          </InfluncerAuthLayout>
+        )
+      },
+      {
+        path: "/influncer/all-products",
+        element: (
+          <InfluncerAuthLayout>
+            <MyProduct />
           </InfluncerAuthLayout>
         )
       },
@@ -260,7 +273,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/influencers",
-        element: <InfluencersLists />
+        element: (
+          <Suspense fallback={<DefaultSkeltion />}>
+            <AdminAuthLayout slug="/admin/profile">
+              <InfluencersLists />
+            </AdminAuthLayout>
+          </Suspense>)
+
       },
       {
         path: '/admin/reports',

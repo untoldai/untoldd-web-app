@@ -102,6 +102,23 @@ export const getAllUserListsService = async (page, limit) => {
     }
 }
 
+
+// service for get orderLists
+export const getOrderListServiceAdmin = async () => {
+    try {
+        const response = await getRequest({
+            url: getBaseDomain() + `order/admin/orders`,
+            headers: getHeaderConfig(getAdminToken()),
+
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
+// admin service for influncer 
 //get influncer list 
 export const getAllInfluncerListsService = async (page, limit) => {
     try {
@@ -114,15 +131,13 @@ export const getAllInfluncerListsService = async (page, limit) => {
         return error;
     }
 }
-// service for get orderLists
-export const getOrderListServiceAdmin = async () => {
+export const assignProductService=async(productId,influncerId)=>{
     try {
-        const response = await getRequest({
-            url: getBaseDomain() + `order/admin/orders`,
-            headers: getHeaderConfig(getAdminToken()),
-
+        const response=await postRequest({
+            url:getBaseDomain()+`product/admin/assign-product?productId=${productId}&influncerId=${influncerId}`,
+            headers:getHeaderConfig(getAdminToken())
         });
-        return response;
+        return response
     } catch (error) {
         return error;
     }

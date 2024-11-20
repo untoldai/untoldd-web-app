@@ -75,10 +75,13 @@ const UserRegister = () => {
       try {
         const resp = await registerUserService(payload);
         setIsLoading(false);
-
-        if (resp.data && resp.data.statusCode === 409) {
-          errorToast(resp.data.message);
+        
+        if (resp.error && resp.error.statusCode === 409) {
+          errorToast(resp.error.message);
           return;
+        }
+        if (resp.error !== null && resp.error.statusCode === 500) {
+          errorToast(resp.error.message); return
         }
 
         if (resp.data && resp.data.statusCode === 201) {
@@ -169,7 +172,7 @@ const UserRegister = () => {
                     maxLength="10"
                   />
                   {errors.phone && <span className='text-red-500'>{errors.phone}</span>}
-                  <span className='text-sm text-gray-500 mt-1'>Phone number must be exactly 10 digits.</span> 
+                  <span className='text-sm text-gray-500 mt-1'>Phone number must be exactly 10 digits.</span>
                 </div>
 
                 <div>
@@ -198,7 +201,7 @@ const UserRegister = () => {
                     handleChange={handleChange}
                   />
                   {errors.password && <span className='text-red-500'>{errors.password}</span>}
-                  <span className='text-sm text-gray-500 mt-1'>Password must be at least 8 characters long.</span> 
+                  <span className='text-sm text-gray-500 mt-1'>Password must be at least 8 characters long.</span>
                 </div>
 
                 <div>

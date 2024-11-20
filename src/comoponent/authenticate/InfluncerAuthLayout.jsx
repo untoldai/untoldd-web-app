@@ -26,9 +26,9 @@ const InfluncerAuthLayout = ({ children, slug = "#" }) => {
                     navigate('/influncer/login');
                     return;
                 }
-                //console.log(authToken)
+                // console.log(authToken)
                 const response = await getInfluncerProfileService();
-                console.log(response);
+                // console.log(response);
 
                 if (response.data !== null && response.data.success === true) {
                     console.log(response.data.data)

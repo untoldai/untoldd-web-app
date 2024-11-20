@@ -6,10 +6,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-import ProductSection from '../../comoponent/specific/main/TopDeals'
-import { categorySection } from '../../constants/product';
-
-import { BelugaTshirt } from '../../assets';
 import { getProductByCategory } from '../../service/product/product.service';
 import CardSkelton from '../../comoponent/skelton/CardSkeltion';
 const Productcard = lazy(() => import('../../comoponent/shared/card/productcard'));
@@ -80,37 +76,120 @@ const KidsWareHomepage = () => {
 
       </section> */}
 
-      <div className='p-5 my-10 '>
-        <p className='text-3xl font-bold  px-10 text-center'>Top Selling Products</p>
-
-        <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-10  px-0 sm:px-5'>
-          {
-            isLoading ?
-              <CardSkelton />
-              :
-
-              products && products.map((prd, i) => (
-                <Suspense fallback={<CardSkelton />}>
-                  <Productcard product={prd} isLoading={isLoading} />
-                </Suspense>
-              ))
-          }
-        </div>
-      </div>
+      <ProductSectionmain title="Top Selling Product" products={products} isLoading={isLoading} />
       <div className='px-0 md:px-40 flex justify-center items-center  my-4'>
         <WhyUntoldd />
-      </div>
 
+
+      </div>
+      <LimitedTimeOffer />
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-semibold mb-8">Shop the Look</h2>
+          <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-10  px-0 sm:px-5'>
+            {
+              isLoading ?
+                <CardSkelton />
+                :
+
+                products && products.map((prd, i) => (
+                  <Suspense fallback={<CardSkelton />}>
+                    <Productcard product={prd} isLoading={isLoading} />
+                  </Suspense>
+                ))
+            }
+          </div>
+        </div>
+      </section>
+      <section className="py-16 bg-green-100">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-semibold mb-8">Eco-friendly Products</h2>
+          <p className="mb-4">Browse our range of sustainable and environmentally friendly products</p>
+          <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-10  px-0 sm:px-5'>
+            {
+              isLoading ?
+                <CardSkelton />
+                :
+
+                products && products.map((prd, i) => (
+                  <Suspense fallback={<CardSkelton />}>
+                    <Productcard product={prd} isLoading={isLoading} />
+                  </Suspense>
+                ))
+            }
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
+const ProductSectionmain = ({ title, products, isLoading }) => {
 
+  return (
+    <div className='p-5 my-10 '>
+      <p className='text-3xl font-bold  px-10 text-center'>{title}</p>
+
+      <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-10  px-0 sm:px-5'>
+        {
+          isLoading ?
+            <CardSkelton />
+            :
+
+            products && products.map((prd, i) => (
+              <Suspense fallback={<CardSkelton />}>
+                <Productcard product={prd} isLoading={isLoading} />
+              </Suspense>
+            ))
+        }
+      </div>
+    </div>
+  )
+
+}
+
+const LimitedTimeOffer = () => {
+  const [timeLeft, setTimeLeft] = useState('');
+
+  useEffect(() => {
+    const countdownDate = new Date("Dec 25, 2024 00:00:00").getTime();
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 2 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+
+      if (distance < 0) {
+        clearInterval(interval);
+        setTimeLeft("EXPIRED");
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600 text-white my-3 py-16">
+      <div className="max-w-6xl mx-auto text-center">
+        <h2 className="text-3xl font-semibold mb-4">Limited Time Offer!</h2>
+        <p className="text-xl">Hurry up, this offer ends in:</p>
+        <div className="mt-4 text-4xl font-bold">{timeLeft}</div>
+        <button className="mt-8 bg-white text-black px-6 py-3 rounded-lg hover:bg-yellow-400 transition duration-300">Shop Now</button>
+      </div>
+    </section>
+  );
+};
 
 const WhyUntoldd = () => {
 
   return (
     <div>
-      <h2 className='font-bold text-xl sm:text-3xl text-center my-5 '>Why Untoldd</h2>
+      <h2 className='font-bold text-xl sm:text-3xl text-center my-5 '>Why Untoldd?</h2>
 
       <div className='flex flex-col sm:flex-row justify-around gap-3 px-10 sm:px-20 '>
 

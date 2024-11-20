@@ -176,8 +176,8 @@ export const footerItem = [
     ]
   },
   {
-    id: 0,
-    title: "FAQ",
+    id: 1,
+    title: "Follow us",
     links: [
       {
         id: 0,
@@ -199,6 +199,23 @@ export const footerItem = [
         name: "LINKEDIN",
         slug: "#",
       },
+    ]
+  },
+  {
+    id: 2,
+    title: "Parnter us",
+    links: [
+      {
+        id: 0,
+        name: "Signup",
+        slug: "influncer/signup",
+      },
+      {
+        id: 1,
+        name: "Login",
+        slug: "/influncer/login",
+      },
+      
     ]
   }
 ]

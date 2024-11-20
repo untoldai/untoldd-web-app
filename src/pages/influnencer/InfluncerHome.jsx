@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS styles
 import { Line } from 'react-chartjs-2';  // Import the Line chart from react-chartjs-2
@@ -12,6 +12,9 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { getAllInfluncerProductService } from '../../service/influncer/influncer.service';
+import { InfluncerProductCard } from './MyProduct';
+import { FaInbox } from 'react-icons/fa';
 
 // Registering the required ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -178,6 +181,21 @@ const FanMessages = ({ messages }) => (
 );
 
 const Dashboard = ({ influencer }) => {
+  const [products, setProducts] = useState([]);
+  async function getMyproducts() {
+    try {
+      const response = await getAllInfluncerProductService();
+
+      if (response.data !== null && response.data.statusCode === 200) {
+        return setProducts(response.data.data)
+      }
+    } catch (error) {
+      return error
+    }
+  }
+  useEffect(() => {
+    getMyproducts();
+  }, [])
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
       {/* Bio Section */}
@@ -200,9 +218,17 @@ const Dashboard = ({ influencer }) => {
       <div className="col-span-2">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Most Selling Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {influencer.products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {
+            products.length > 0 ? products.map((prd, ind) => (
+              <InfluncerProductCard key={ind} product={prd.ProductDetails[0]} token={prd.assignment_token} />
+            ))
+              :
+              <div className="flex items-center justify-center p-6 bg-gray-100 rounded-lg shadow-lg max-w-md mx-auto hover:bg-red-50 hover:scale-105 transition-all duration-300">
+                <FaInbox className="text-red-500 text-4xl mr-3" />
+                <p className="text-gray-700 text-lg font-medium">No Product Found</p>
+              </div>
+
+          }
         </div>
       </div>
 

@@ -132,7 +132,7 @@ const AddressList = ({ userId }) => {
     const handleSetDefault = async (id) => {
         try {
             const response = await setDefaultAddressService(id);
-            console.log(response)
+            
             if (response.data.statusCode == 200) {
 
                 successToast(response.data.message)

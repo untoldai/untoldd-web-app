@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UntloddLogo } from '../../../assets';
+import { LogoFinal, UntloddLogo } from '../../../assets';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaHeart, FaHome, FaPhone, FaSearch, FaShoppingBag, FaShoppingCart, FaSign, FaSignInAlt, FaSignOutAlt, FaTimes, FaUser, FaUserCircle } from 'react-icons/fa';
 import { motion } from "framer-motion";
@@ -61,7 +61,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                 <div className='flex justify-around items-center relative'>
 
 
-                    <img src={UntloddLogo} className='h-14 w-1/5' alt="Logo" />
+                    <img src={LogoFinal} className='h-14' alt="Logo" />
 
                     {/* Mobile Toggle Button on the Right */}
 
@@ -125,7 +125,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                             <ul className='flex flex-col w-full gap-2'>
                                 {navItems.map((navItem, index) => (
                                     <li key={index}>
-                                        <Link to={navItem.slug} className={`text-black font-semibold hover:text-pink-400 transition-all`}>
+                                        <Link to={navItem.slug} onClick={() => setIsNavOpen(false)} className={`text-black font-semibold hover:text-pink-400 transition-all`}>
                                             {navItem.title}
                                         </Link>
                                     </li>
@@ -149,10 +149,10 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                             <Link to="/app/user-profile" className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out">
                                 <FaUser className="text-xl" />
 
-                            </Link>   <button handleClick={() => {
+                            </Link>   <button onClick={() => {
                                 removeUserToken()
-                                navigate("/aut/user-login")
-                            }} className="flex items-center gap-2 text-black hover:text-gray-300 transition-all duration-200 ease-in-out">
+                                navigate("/auth/user-login");
+                            }} className="flex items-center gap-2 text-black font-bold transition-all duration-200 ease-in-out">
                                 <FaSignOutAlt className="text-xl" />
 
                             </button>

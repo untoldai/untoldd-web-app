@@ -1,4 +1,4 @@
-
+import LogoFinal from './LogoFInal.jpeg'
 import UntloddLogo from "./UntolddLogo.png"
 import SphereObject from "./icon/sc.png";
 import ExploreImage from './ExploreStore.png';
@@ -26,7 +26,8 @@ import CreamBox from "./creamBox.png";
 import Beluga from "./beluga.png";
 import BelugaChild from "./belugachild.png";
 import BelugaTshirt from "./belugatshirt.png";
-import Contactus from "./contactus.png"
+import Contactus from "./contactus.png";
+import SimplicBanner from "./SimplicBanner.jpeg"
 export {
     UntloddLogo,
     SphereObject,
@@ -55,5 +56,7 @@ export {
     Beluga,
     BelugaChild,
     BelugaTshirt,
-    Contactus
+    Contactus,
+    SimplicBanner,
+    LogoFinal
 }

@@ -3,9 +3,10 @@ import { BelugaTshirt, UntloddLogo } from '../../assets';
 import { FaRupeeSign, FaUser, FaPhone, FaEnvelope, FaMapMarkedAlt, FaShoppingCart, FaMoneyBillWave, FaEdit } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { confirmOrderService, createOrderService, getAddressListsService, getUserProfileService, intiatePaymentService, verifyPaymentPaymentService } from '../../service/user/user.service';
+import { addNewAddressService, confirmOrderService, createOrderService, getAddressListsService, getUserProfileService, intiatePaymentService, verifyPaymentPaymentService } from '../../service/user/user.service';
 import { errorToast, successToast } from '../../hooks/toast.hooks';
 import OrderLoader from '../../comoponent/Loader/OrderLoader';
+import CenterPopDialog from '../../comoponent/Dialog/CenterPopDialog';
 const CheckOutPage = () => {
     const [addresses, setAddresses] = useState([]);
     const [user, setUser] = useState(null)
@@ -16,6 +17,7 @@ const CheckOutPage = () => {
     const [products, setProducts] = useState([]);
     const [orderId, setOrderId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isVisble, setIsVisible] = useState(false);
     const getTotalPrice = () => {
         return products.reduce((total, product) => total + product.price * product.quantity, 0);
     };
@@ -53,7 +55,7 @@ const CheckOutPage = () => {
     async function InsitateBooking() {
         try {
             setIsLoading(true)
-            if(selectedAddressId===""){
+            if (selectedAddressId === "") {
                 setIsLoading(false)
                 return errorToast('please selected delivery address')
             }
@@ -148,7 +150,7 @@ const CheckOutPage = () => {
             };
 
             const response = await confirmOrderService(payload, localStorage.getItem('oid'));
-            console.log(response)
+            
             if (response.data !== null && response.data.statusCode === 200) {
                 setIsLoading(false)
                 //  console.log("aks");
@@ -173,6 +175,7 @@ const CheckOutPage = () => {
     }, []);
     return (
         <div>
+            <AddAdresHere isVisble={isVisble} onclose={() => setIsVisible(false)} handlefetch={fetchAddresses} />
             {
                 isLoading ?
                     <div className='min-h-[80vh] flex items-center justify-center'>
@@ -184,7 +187,7 @@ const CheckOutPage = () => {
 
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-4 my-20 md:px-28 px-0'>
                         {/* Personal Information Card */}
-                        <div className='shadow-2xl rounded-lg border p-2 bg-white max-w-xl' >
+                        <div className='shadow-2xl rounded-lg border p-2 bg-white max-w-xl overflow-y-scroll' >
                             <h2 className='text-xl font-bold text-neutral-800 flex items-center mb-4'>
                                 <FaUser className='mr-2' />
                                 Personal Information
@@ -241,7 +244,7 @@ const CheckOutPage = () => {
                                 </div>
                             </div>
 
-                            <button onClick={() => navigate('/user/profile')} type="button" className='bg-violet-700 text-white font-bold rounded-lg shadow-md mt-3 px-4 py-2 hover:bg-violet-600'>
+                            <button onClick={()=>setIsVisible(true)} type="button" className='bg-violet-700 text-white font-bold rounded-lg shadow-md mt-3 px-4 py-2 hover:bg-violet-600'>
                                 Add New Address
                             </button>
                         </div>
@@ -311,4 +314,151 @@ const CheckOutPage = () => {
     );
 }
 
+const AddAdresHere = ({ isVisble, onclose,handlefetch }) => {
+    const [formData, setFormData] = useState({
+        streetAddress: '',
+        apartmentNumber: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: 'USA',
+        phone: '',
+        addressType: 'Home',
+        isDefault: false,
+    });
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            
+            
+
+                
+
+                const response = await addNewAddressService(formData);
+
+                if (response.data.statusCode === 201) {
+                    
+                    setFormData({
+                        streetAddress: '',
+                        apartmentNumber: '',
+                        city: '',
+                        state: '',
+                        postalCode: '',
+                        country: 'USA',
+                        phone: '',
+                        addressType: 'Home',
+                        isDefault: false,
+                    });
+                    onclose()
+                    handlefetch();
+                    successToast(response.data.message);
+                    return;
+                }
+
+            
+            errorToast(response.error.message);
+            
+            return
+
+        } catch (error) {
+
+            console.error("Error saving address:", error);
+        }
+    };
+    return (<>
+        <CenterPopDialog visible={isVisble} onClose={onclose} className={'!h-2/3 !w-1/2 overflow-y-scroll'}>
+            <div>
+                <h2 className=''>Add New Address</h2>
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="streetAddress"
+                        placeholder="Street Address"
+                        value={formData.streetAddress}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                    <input
+                        type="text"
+                        name="apartmentNumber"
+                        placeholder="Apartment/Suite (optional)"
+                        value={formData.apartmentNumber}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="City"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                    <input
+                        type="text"
+                        name="state"
+                        placeholder="State"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                    <input
+                        type="text"
+                        name="postalCode"
+                        placeholder="Postal Code"
+                        value={formData.postalCode}
+                        onChange={handleInputChange}
+                        maxLength={6}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                    <select
+                        name="country"
+                        value={formData.country}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded"
+                    >
+
+                        <option value="INDIA" selected disabled>INDIA</option>
+
+                    </select>
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                    <select
+                        name="addressType"
+                        value={formData.addressType}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                    >
+                        <option value="Home">Home</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="w-full p-2 bg-red-600 text-white rounded hover:bg-red-500 transition duration-200"
+                    >
+                        Submit
+                
+                    </button>
+                </form>
+            </div>
+        </CenterPopDialog>
+    </>)
+}
 export default CheckOutPage;

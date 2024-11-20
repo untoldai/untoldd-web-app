@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS styles
-import { getInfluncerProfileDetailsService } from '../../service/influncer/influncer.service';
+import { getInfluncerProfileDetailsService, getInstaDetails } from '../../service/influncer/influncer.service';
 
-// Sample influencer data with additional details
-const influencerData = {
-  name: 'Jane Doe',
-  bio: "Hi, I'm Jane Doe, an influencer passionate about beauty, fashion, and fitness. I love collaborating with brands that align with my values and passion for a sustainable lifestyle.",
-  followers: 12000,
-  engagementRate: 75,
-  profileImage: 'https://via.placeholder.com/150',
-  address: '123 Main St, City, Country',
-  dob: '1990-05-15',
-  instagramLink: 'https://instagram.com/janedoe',
-  facebookLink: 'https://facebook.com/janedoe',
-  socialMediaStats: [
-    { platform: 'Instagram', followers: 8000, engagementRate: 85 },
-    { platform: 'Twitter', followers: 3000, engagementRate: 65 },
-    { platform: 'Facebook', followers: 1000, engagementRate: 60 },
-  ],
+
+// Mock function for fetching Instagram data, replace with actual API call
+const fetchInstagramProfile = async (userId) => {
+  try {
+    
+    const response = await getInstaDetails({user_id:userId});
+    console.log(response)
+    const data = await response.json();
+    return {
+      username: data.data.username,
+      followers: data.data.counts.followed_by,
+      posts: data.data.counts.media,
+      bio: data.data.bio,
+      profileImage: data.data.profile_picture,
+      link: `https://instagram.com/${data.data.username}`
+    };
+  } catch (error) {
+    console.error("Error fetching Instagram profile:", error);
+    return null;
+  }
 };
 
 const ProfileCard = ({ influencer, onChange }) => (
@@ -157,31 +161,73 @@ const EditProfileForm = ({ influencer, onSave, onCancel }) => {
 };
 
 const SocialMediaStats = ({ socialMediaStats }) => (
-  <div className="bg-white shadow-xl p-6 rounded-lg" data-aos="fade-up">
-    <h3 className="text-xl font-semibold text-gray-800 mb-4">Social Media Stats</h3>
-    <ul className="space-y-4">
-      {socialMediaStats.map((stat, index) => (
-        <li key={index} className="flex justify-between text-gray-600">
-          <span>{stat.platform}</span>
-          <span>{stat.followers} Followers</span>
-          <span>{stat.engagementRate}% Engagement</span>
-        </li>
-      ))}
-    </ul>
+  <div className="mt-6" data-aos="fade-up">
+  <div className="flex items-center space-x-4 bg-white shadow-lg rounded-xl p-6">
+    <img
+      src={socialMediaStats.profile_picture}
+      alt="Instagram Profile"
+      className="w-20 h-20 rounded-full object-cover border-4 border-indigo-500"
+    />
+    <div className="flex-grow">
+      <h2 className="text-xl font-semibold text-gray-800">
+        @{socialMediaStats.username}
+      </h2>
+      <p className="text-gray-600">{socialMediaStats.bio}</p>
+      <div className="mt-2 flex space-x-6">
+        <div>
+          <span className="font-semibold text-gray-700">Followers</span>
+          <p className="text-gray-500">{socialMediaStats.followers}</p>
+        </div>
+        <div>
+          <span className="font-semibold text-gray-700">Following</span>
+          <p className="text-gray-500">{socialMediaStats.following}</p>
+        </div>
+        <div>
+          <span className="font-semibold text-gray-700">Posts</span>
+          <p className="text-gray-500">{socialMediaStats.posts}</p>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 );
 
 const InfluncerProfile = () => {
-  const [influencer, setInfluencer] = useState(influencerData);
+  const [influencer, setInfluencer] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [profileDetails, setProfileDetails] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const [instagramUserId, setInstagramUserId] = useState('');
+  const [instagramConnected, setInstagramConnected] = useState(false);
+  const [socialMediaStats, setSocialMediaStats] = useState({ instagram: null });
+  const instagramProfile = {
+    username: "john_doe_insta",
+    bio: "Lifestyle Blogger | Traveler | Food Lover",
+    followers: 12000,
+    following: 500,
+    posts: 245,
+    profile_picture: "https://randomuser.me/api/portraits/men/1.jpg", // Sample image
+  };
+
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-    });
+    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      // Fetch profile details
+      setLoading(true);
+      try {
+        const response = await getInfluncerProfileDetailsService();
+        setProfileDetails(response.data.data);
+      } catch (error) {
+        console.error("Error fetching profile details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
   }, []);
 
   const handleEdit = () => setIsEditing(true);
@@ -191,28 +237,21 @@ const InfluncerProfile = () => {
     setInfluencer({ ...influencer, ...updatedData });
     setIsEditing(false);
   };
- 
 
-  const getProfileDetails = async () => {
-      try {
-          const response = await getInfluncerProfileDetailsService();
-          
-              setProfileDetails(response.data.data);
-          
-      } catch (error) {
-          console.error(error);
-      } finally {
-          setLoading(false);
-      }
+  const handleConnectInstagram = async () => {
+    const instagramProfile = await fetchInstagramProfile(instagramUserId);
+    if (instagramProfile) {
+      setSocialMediaStats({ ...socialMediaStats, instagram: instagramProfile });
+      setInstagramConnected(true);
+    } else {
+      alert('Failed to connect Instagram');
+    }
   };
 
-  useEffect(() => {
-      getProfileDetails();
-  }, []);
-
   if (loading) {
-      return <div>Loading...</div>;  // Show loading state while data is being fetched
+    return <div>Loading...</div>;
   }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <h1 className="text-4xl font-bold text-center py-6 text-gray-800">My Profile</h1>
@@ -223,10 +262,34 @@ const InfluncerProfile = () => {
           <EditProfileForm influencer={influencer} onSave={handleSave} onCancel={handleCancel} />
         )}
 
-        <SocialMediaStats socialMediaStats={influencer.socialMediaStats} />
+        {!instagramConnected && (
+          <div className="mt-4">
+            <label className="block text-gray-600">Connect Instagram Account</label>
+            <div className="flex items-center space-x-4">
+              <input
+                type="text"
+                className="p-2 border border-gray-300 rounded-lg"
+                placeholder="Enter Instagram User ID"
+                value={instagramUserId}
+                onChange={(e) => setInstagramUserId(e.target.value)}
+              />
+              <button
+                onClick={handleConnectInstagram}
+                className="px-4 py-2 text-white bg-indigo-500 rounded-lg hover:bg-indigo-600"
+              >
+                Connect
+              </button>
+            </div>
+          </div>
+        )}
+
+        <SocialMediaStats socialMediaStats={instagramProfile} />
       </div>
     </div>
   );
 };
+
+
+
 
 export default InfluncerProfile;

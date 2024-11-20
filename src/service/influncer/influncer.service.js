@@ -147,26 +147,11 @@ export const getOrderListService = async () => {
         return error;
     }
 }
-// get order details service 
-export const getOrderDetailsService = async (orderId) => {
+export const getAllInfluncerProductService = async () => {
     try {
         const response = await getRequest({
-            url: getBaseDomain() + `order/users/order-details?orderId=${orderId}`,
-            headers: getHeaderConfig(getUserToken()),
-
-        });
-        return response;
-    } catch (error) {
-        return error;
-    }
-}
-// payment 
-export const intiatePaymentService = async (payload) => {
-    try {
-        const response = await postRequest({
-            url: getBaseDomain() + "payment/initate",
-            headers: getHeaderConfig(getUserToken()),
-            data: payload
+            url: getBaseDomain() + `product/influncer/products`,
+            headers: getHeaderConfig(getInfluncerToken())
         });
         return response;
     } catch (error) {
@@ -174,15 +159,13 @@ export const intiatePaymentService = async (payload) => {
     }
 }
 
-export const verifyPaymentPaymentService = async (payload) => {
+export const getInstaDetails=async({user_id})=>{
     try {
-        const response = await postRequest({
-            url: getBaseDomain() + "payment/verify",
-            headers: getHeaderConfig(getUserToken()),
-            data: payload
+        const response=await getRequest({
+            url:`https://graph.instagram.com/${user_id}/media?field=id&access_token=IGQWRNVGRqVDl6MDdCSWZACT3otRERXRVkzZA3lZAV2t5RF9GYWJ2VzQ0cmJNR1NYY1NWVjB4cjFtdi1jYzhQbzBhNzdzTjN0cEVKU29jRTIyTGxTR0JEUmVJZAUM1Rm9CY0dDNk9OdmNFNXpEbXFhRVZAxOG1MNjNHWmMZD`
         });
-        return response;
+        response
     } catch (error) {
-        return error;
+        return error
     }
 }

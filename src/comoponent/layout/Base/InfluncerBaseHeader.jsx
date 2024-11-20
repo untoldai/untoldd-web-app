@@ -36,7 +36,7 @@ const InfluncerBaseHeader = ({ isScrolled, navItems }) => {
                     {
                         user && user?.isLoggedIn || getUserToken() ?
                             <div className='flex gap-3 items-center'>
-                                <ToolTipButton Icon={FaUser} title={"Profile"} handleClick={() => navigate("/app/user-profile")} />
+                                <ToolTipButton Icon={FaUser} title={"Profile"} handleClick={() => navigate("/influncer/profile")} />
 
                                 <ToolTipButton Icon={FaSignOutAlt} title={"Logout"} handleClick={() => removeInfluncerToken()} />
                                 <ToolTipButton Icon={FaShoppingBag} title={"Orders"} handleClick={() => navigate("/influncer/my-orders")} />

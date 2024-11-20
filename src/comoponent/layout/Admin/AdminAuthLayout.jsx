@@ -21,7 +21,7 @@ const AdminAuthLayout = ({ slug = "/auth/admin-login", children }) => {
             }
 
             const response = await getAdminProfileService();
-
+            console.log(response)
             if (response.error !== null) {
                 setIsLoading(false)
                 navigate('/auth/admin-login');
