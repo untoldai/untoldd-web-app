@@ -4,15 +4,15 @@ import { SimplicBanner } from '../../../assets';
 const KidsWearHero = () => {
     return (
         <div 
-            className='overflow-hidden h-full bg-[#FFFDF2] min-h-screen flex items-center bg-cover bg-center'
+            className='overflow-hidden h-full bg-[#FFFDF2] h-screen flex items-center bg-cover bg-center'
             style={{
                 backgroundImage: `url(${SimplicBanner})`,
                 backgroundSize: 'cover', // Ensures the background image covers the entire container
-                backgroundPosition: 'center center', // Keeps the background centered
+                backgroundPosition: 'center', // Keeps the background centered
                 backgroundRepeat: 'no-repeat' // Prevents the background from repeating
             }}
         >
-            <div className='mx-4 md:ml-36 mt-20'>
+            <div className='mx-4 md:ml-36 mt-20 hidden'>
                 <h2 className='text-2xl md:text-3xl font-bold tracking-widest leading-tight'>
                     Best Outfit for
                     <br /> Your Loved One

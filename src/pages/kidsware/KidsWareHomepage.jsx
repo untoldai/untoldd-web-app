@@ -77,13 +77,9 @@ const KidsWareHomepage = () => {
       </section> */}
 
       <ProductSectionmain title="Top Selling Product" products={products} isLoading={isLoading} />
-      <div className='px-0 md:px-40 flex justify-center items-center  my-4'>
-        <WhyUntoldd />
-
-
-      </div>
+      
       <LimitedTimeOffer />
-      <section className="py-16">
+      <section className="py-16 hidden">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-semibold mb-8">Shop the Look</h2>
           <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-10  px-0 sm:px-5'>
@@ -120,6 +116,11 @@ const KidsWareHomepage = () => {
           </div>
         </div>
       </section>
+      <div className='px-0 md:px-40 flex justify-center items-center  my-4'>
+        <WhyUntoldd />
+
+
+      </div>
     </div>
   )
 }

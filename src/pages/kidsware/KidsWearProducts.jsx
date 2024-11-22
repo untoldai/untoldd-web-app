@@ -145,8 +145,8 @@ const KidsWearAllProducts = () => {
                         </div>
                     </div>
 
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-800">Price Range</h3>
+                    <div className="hidden">
+                        <h3 className="text-lg hidden font-semibold text-gray-800">Price Range</h3>
                         <input
                             type="range"
                             name="price"

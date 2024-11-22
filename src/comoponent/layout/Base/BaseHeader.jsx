@@ -27,7 +27,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
     return (
         <div>
 
-            <div className='h-10 w-full bg-black text-white flex justify-around items-center'>
+            <div className='h-10 w-full bg-black text-white flex justify-around items-center hidden'>
                 <div className='flex gap-5'>
                     <p className='flex gap-3 items-center font-bold'><FaEnvelope />admin@untoldd.com </p>
                     <p className='flex gap-3 items-center font-bold'><FaPhone />+91-29003837392 </p>
@@ -57,7 +57,7 @@ const BaseHeader = ({ isScrolled, navItems }) => {
                     </Link> */}
                 </div>
             </div>
-            <div className={` py-2 z-50  px-3 h-16 fixed top-10 left-0 w-full transition-all duration-300  ${isScrolled ? 'bg-white shadow-lg !top-0' : 'bg-white  '}`}>
+            <div className={` py-2 z-50  px-3 h-16 fixed top-0 left-0 w-full transition-all duration-300  ${isScrolled ? 'bg-white shadow-lg !top-0' : 'bg-white  '}`}>
                 <div className='flex justify-around items-center relative'>
 
 

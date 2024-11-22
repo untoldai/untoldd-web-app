@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { getOrderListServiceAdmin } from '../../service/admin/admin.service';
-
-// Sample data
-const initialOrders = [
-  { id: 1, customer: 'John Doe', date: '2024-08-10', total: 120.00, status: 'Shipped' },
-  { id: 2, customer: 'Jane Smith', date: '2024-08-12', total: 80.50, status: 'Pending' },
-  { id: 3, customer: 'Alice Johnson', date: '2024-08-15', total: 150.75, status: 'Delivered' },
-  { id: 4, customer: 'Bob Brown', date: '2024-08-18', total: 95.20, status: 'Cancelled' },
-  // Add more orders as needed
-];
+import { getOrderListServiceAdmin, updateOrderStatusServiceAdmin } from '../../service/admin/admin.service';
+import { errorToast, successToast } from '../../hooks/toast.hooks';
 
 const OrderLists = () => {
   const [orders, setOrders] = useState([]);
   const [sortKey, setSortKey] = useState('date');
+  const [orderStatus, setOrderStatus] = useState('');
   const [sortOrder, setSortOrder] = useState('desc');
   const [currentPage, setCurrentPage] = useState(1);
+  const [orderId, setOrderId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const ordersPerPage = 5;
 
   const sortOrders = (key) => {
@@ -42,9 +37,40 @@ const OrderLists = () => {
 
     }
   }
+  async function updateOrderStatus() {
+    try {
+      setIsLoading(true);
+      const response = await updateOrderStatusServiceAdmin({ orderId: orderId, currentStatus: orderStatus });
+      
+      if (response.data != null && response.data.statusCode === 200) {
+        setIsLoading(false);
+        successToast(response.data.message);
+        setOrderStatus('')
+        getOrderList();
+
+        return
+      }
+      if (response.error !== null && response.error.statusCode === 500) {
+        setIsLoading(false);
+        errorToast(response.error.message);
+        return
+      }
+    } catch (error) {
+      setIsLoading(false);
+      errorToast(error);
+      return
+    }
+  }
   useEffect(() => {
+    
     getOrderList();
-  }, [])
+  }, []);
+  useEffect(() => {
+    if(orderStatus===""){
+      return
+    }
+    updateOrderStatus();
+  }, [orderStatus])
   return (
     <div className='ml-[14rem]  mt-10 '>
       <div className="min-h-screen bg-gray-100 p-6">
@@ -92,12 +118,10 @@ const OrderLists = () => {
 
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Image</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Amount</th>
-                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Pay_method</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Paid_Amount</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Payment_id</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">payment_status</th> */}
+                 
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">order_status</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Created_at</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Update_Status</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -114,8 +138,22 @@ const OrderLists = () => {
                         <img src={order && order?.productDetails?.images.url} alt="" className='h-10' />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order && order?.totalAmount}</td>
-                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${order && order?.status==="CREATED"?"text-red-400":"text-green-400"}`}>{order && order?.status}</td>
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${order && order?.status === "CREATED" || order?.status === "PENDING" ||order?.status === "CANCEL" ? "text-red-400" : "text-green-400"}`}>{order && order?.status}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order && order?.orderDate}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <select value={order?.status} onChange={(e) => {
+                          setOrderId(order?._id)
+                          setOrderStatus(e.target.value)
+                        }} className='bg-white shadow-2xl border-none outline-none shadow-slate-800 rounded-sm p-2 '>
+                          <option value="#"  disabled>Select Order Status</option>
+                          <option value="CREATED">CREATED</option>
+                          <option value="PENDING">PENDING</option>
+                          <option value="CONFIRMED">CONFIRMED</option>
+                          <option value="SHIPPED">SHIPPED</option>
+                          <option value="DELIVERED">DELIVERED</option>
+                          <option value="CANCEL">CANCEL</option>
+                        </select>
+                      </td>
                     </tr>
                   )) : ""}
                 </tbody>

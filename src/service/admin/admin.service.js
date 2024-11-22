@@ -116,7 +116,18 @@ export const getOrderListServiceAdmin = async () => {
         return error;
     }
 }
+export const updateOrderStatusServiceAdmin = async ({ orderId, currentStatus }) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + `order/admin/order/update/status?orderId=${orderId}&currentStatus=${currentStatus}`,
+            headers: getHeaderConfig(getAdminToken()),
 
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 
 // admin service for influncer 
 //get influncer list 
@@ -131,11 +142,11 @@ export const getAllInfluncerListsService = async (page, limit) => {
         return error;
     }
 }
-export const assignProductService=async(productId,influncerId)=>{
+export const assignProductService = async (productId, influncerId) => {
     try {
-        const response=await postRequest({
-            url:getBaseDomain()+`product/admin/assign-product?productId=${productId}&influncerId=${influncerId}`,
-            headers:getHeaderConfig(getAdminToken())
+        const response = await postRequest({
+            url: getBaseDomain() + `product/admin/assign-product?productId=${productId}&influncerId=${influncerId}`,
+            headers: getHeaderConfig(getAdminToken())
         });
         return response
     } catch (error) {

@@ -19,7 +19,7 @@ const BeautyContactUs = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-8 md:p-16">
+    <div className="bg-gray-50 p-8 md:p-16 mt-12 sm:mt-0">
       <h1 className="text-5xl font-bold text-black mb-8 text-center">Contact Us</h1>
       <p className="text-lg md:text-xl text-gray-700 mb-8 text-center">
         We’d love to hear from you! Please fill out the form below, and we’ll get back to you as soon as possible.
@@ -29,9 +29,10 @@ const BeautyContactUs = () => {
         {/* Contact Information Card */}
         <div className="bg-white shadow-lg rounded-lg p-8 mb-8 md:mb-0 md:w-1/3">
           <h2 className="text-3xl font-semibold text-sky-500 mb-4">Get in Touch</h2>
-          <p className="text-lg text-gray-700 mb-2">📞 Phone: +1 (234) 567-8901</p>
-          <p className="text-lg text-gray-700 mb-2">📧 Email: support@babybeluga.com</p>
-          <p className="text-lg text-gray-700 mb-4">🏢 Address: 123 Ocean Avenue, Suite 456, City, Country</p>
+          <p className="text-lg text-gray-700 mb-2">📞 Phone: +91 9471011463</p>
+          <p className="text-lg text-gray-700 mb-2">📧 Email: admin@untoldd.in</p>
+          <p className="text-lg text-gray-700 mb-4">🏢 Address: Bania Tola Near Jai Mata Di Agency, M.G Road, Katihar, Bihar 
+          Pin code 854105</p>
           <h3 className="text-xl font-semibold text-yellow-500 mb-2">Business Hours</h3>
           <p className="text-lg text-gray-700">Mon - Fri: 9 AM - 5 PM</p>
           <p className="text-lg text-gray-700">Sat: 10 AM - 4 PM</p>
