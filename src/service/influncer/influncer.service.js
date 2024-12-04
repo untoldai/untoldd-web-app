@@ -11,7 +11,7 @@ export const registerInfluncerService = async (payload) => {
             data: payload,
             headers: null
         });
-        console.log(response)
+      //  console.log(response)
         return response;
     } catch (error) {
         return error;
@@ -33,7 +33,7 @@ export const LoginInfluncerService = async (payload) => {
 
 export const getInfluncerProfileService = async () => {
     try {
-console.log(getInfluncerToken())
+      //  console.log(getInfluncerToken())
         const response = await getRequest({
             url: getBaseDomain() + "auth/influncer/profile",
             headers: getHeaderConfig(getInfluncerToken())
@@ -159,13 +159,27 @@ export const getAllInfluncerProductService = async () => {
     }
 }
 
-export const getInstaDetails=async({user_id})=>{
+export const getInstaDetails = async ({ user_id }) => {
     try {
-        const response=await getRequest({
-            url:`https://graph.instagram.com/${user_id}/media?field=id&access_token=IGQWRNVGRqVDl6MDdCSWZACT3otRERXRVkzZA3lZAV2t5RF9GYWJ2VzQ0cmJNR1NYY1NWVjB4cjFtdi1jYzhQbzBhNzdzTjN0cEVKU29jRTIyTGxTR0JEUmVJZAUM1Rm9CY0dDNk9OdmNFNXpEbXFhRVZAxOG1MNjNHWmMZD`
+        const response = await getRequest({
+            url: `https://graph.instagram.com/${user_id}/media?field=id&access_token=IGQWRNVGRqVDl6MDdCSWZACT3otRERXRVkzZA3lZAV2t5RF9GYWJ2VzQ0cmJNR1NYY1NWVjB4cjFtdi1jYzhQbzBhNzdzTjN0cEVKU29jRTIyTGxTR0JEUmVJZAUM1Rm9CY0dDNk9OdmNFNXpEbXFhRVZAxOG1MNjNHWmMZD`
         });
         response
     } catch (error) {
         return error
+    }
+}
+// reset password 
+export const influncerResetPassword = async (payload) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + "auth/influncer/reset-password",
+            headers: getHeaderConfig(getInfluncerToken()),
+            data: payload
+
+        });
+        return response;
+    } catch (error) {
+        return error;
     }
 }

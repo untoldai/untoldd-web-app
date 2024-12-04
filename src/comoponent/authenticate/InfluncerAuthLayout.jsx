@@ -22,7 +22,7 @@ const InfluncerAuthLayout = ({ children, slug = "#" }) => {
 
 
                 if (!authToken) {
-                    console.log('not found');
+                    //console.log('not found');
                     navigate('/influncer/login');
                     return;
                 }
@@ -31,7 +31,7 @@ const InfluncerAuthLayout = ({ children, slug = "#" }) => {
                 // console.log(response);
 
                 if (response.data !== null && response.data.success === true) {
-                    console.log(response.data.data)
+                    //console.log(response.data.data)
                     dispatch(loginInfluncer(response.data.data));
                     setIsLoading(false);
                     if (window.location.pathname !== slug) {
