@@ -11,15 +11,15 @@ const BeautyAboutUs = () => {
         <div>
 
           <img
-            className='h-96 w-96'
+            className='h-[500px] w-96'
             src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YWJvdXQlMjB1cyUyMGNvbXBhbnl8ZW58MHx8MHx8fDA%3D" alt="" />
 
 
         </div>
         <div className='max-w-xl'>
           <h3 className='text-3xl font-bold '>Untoldd to be told</h3>
-          <p className='font-semibold text-slate-500 tracking-wider'>Untoldd to be toldd
-                 At Untoldd, our mission is to empower creators by transforming their unique visions into thriving, sustainable brands. We believe that every creator has an untold story, a brand waiting to be born. Our goal is to make brand creation accessible, seamless, and impactful by providing end-to-end support—from manufacturing and packaging to marketing and distribution.
+          <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">Untoldd to be toldd
+             At Untoldd, our mission is to empower creators by transforming their unique visions into thriving, sustainable brands. We believe that every creator has an untold story, a brand waiting to be born. Our goal is to make brand creation accessible, seamless, and impactful by providing end-to-end support—from manufacturing and packaging to marketing and distribution.
             We are committed to redefining the traditional model of brand building by partnering with influencers, giving them the tools and resources they need to succeed. We aim to democratize entrepreneurship, allowing creators to turn their passions into profitable businesses, and bring innovative, high-quality products to consumers worldwide.
             Untoldd is more than just a business; it’s a platform for creators to share their stories, build legacies, and inspire others. Our mission is to make these untold stories a reality, one brand at a time.</p>
         </div>
@@ -101,20 +101,25 @@ const BeautyAboutUs = () => {
           </div>
         </div>
       </section>
-      <div className='flex justify-center flex-col items-center my-10'>
+      <div className="flex flex-col items-center my-10 px-4 md:px-10">
+  <h3 className="text-center text-4xl font-extrabold text-gray-900 my-6">Our Story</h3>
 
-        <h3 className='text-center text-3xl font-bold my-5'>Our Story</h3>
-        <p className='text-slate-500  my-3 max-w-3xl font-semibold tracking-widest'>Selina Gomez
-          Ceo At Webecy Digital
-          Untoldd was born out of a passion for entrepreneurship and a desire to change the way brands are created. As a team of digital marketing enthusiasts and e-commerce experts, we noticed a growing trend: influencers wanted to do more than just promote products—they wanted to create their own. However, the process of launching a brand was often complex, costly, and time-consuming, especially for those without a background in business.
+  <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">
+    <span className="font-bold text-gray-800">Selina Gomez</span>, CEO at Webecy Digital  
+    Untoldd was born out of a passion for entrepreneurship and a desire to change the way brands are created. As a team of digital marketing enthusiasts and e-commerce experts, we noticed a growing trend: influencers wanted to do more than just promote products—they wanted to create their own. However, the process of launching a brand was often complex, costly, and time-consuming, especially for those without a background in business.
+  </p>
 
-          
+  <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">
+    This realization sparked the idea for Untoldd. We wanted to bridge the gap between creativity and commerce by offering a comprehensive solution that would make brand creation accessible to all influencers, regardless of their size or resources. Our team combined its deep knowledge of e-commerce, product development, and digital marketing to build a platform that takes care of everything from manufacturing to sales, allowing influencers to focus on what truly matters—connecting with their audience and building their personal brand.
+  </p>
 
-          
-        </p>
-        <p className='text-slate-500  my-3 max-w-3xl font-semibold tracking-widest'> This realization sparked the idea for Untoldd. We wanted to bridge the gap between creativity and commerce by offering a comprehensive solution that would make brand creation accessible to all influencers, regardless of their size or resources. Our team combined its deep knowledge of e-commerce, product development, and digital marketing to build a platform that takes care of everything from manufacturing to sales, allowing influencers to focus on what truly matters—connecting with their audience and building their personal brand.</p>
-        <p className='text-slate-500  my-3 max-w-3xl font-semibold tracking-widest'>Untoldd is more than just a business; it's a movement to empower creators and bring untold stories to life. By partnering with influencers to create unique, high-quality products, we're not just launching brands—we're helping to write the next chapter in the story of influencer commerce.</p>
-      </div>
+  <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">
+    Untoldd is more than just a business; it's a movement to empower creators and bring untold stories to life. By partnering with influencers to create unique, high-quality products, we're not just launching brands—we're helping to write the next chapter in the story of influencer commerce.
+  </p>
+D
+  
+</div>
+
     </div>
   );
 }

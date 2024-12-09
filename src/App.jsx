@@ -1,9 +1,10 @@
 import React from 'react'
 
-import Home from './pages/Home'
+
+import KidsWareHomepage from './pages/kidsware/KidsWareHomepage'
 const App = () => {
   return (
-    <Home />
+    <KidsWareHomepage />
   )
 }
 

@@ -234,7 +234,7 @@ export const kidsWearNavItems = [
   {
     id: 2,
     title: "Blogs",
-    slug: "/app/blgs"
+    slug: "/app/blogs"
   },
   {
     id: 3,

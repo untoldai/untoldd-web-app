@@ -54,6 +54,8 @@ import InfluencerHome from './pages/influnencer/InfluncerHome.jsx';
 import InfluncerProfile from './pages/influnencer/InfluncerProfile.jsx';
 import InfluncerAuthLayout from './comoponent/authenticate/InfluncerAuthLayout.jsx';
 import MyProduct from './pages/influnencer/MyProduct.jsx';
+const Blog = lazy(() => import('./pages/admin/Blog.jsx'));
+const BlogListPage=lazy(()=>import('./pages/kidsware/WebsiteBlog.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -206,6 +208,10 @@ const router = createBrowserRouter([
       {
         path: "/app/cart",
         element: <KidsWearCart />
+      },
+      {
+        path: "/app/blogs",
+        element: <BlogListPage />
       }
     ]
   },
@@ -265,7 +271,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/users",
-        element: <Customer />
+        element: (
+          <Suspense fallback={<DefaultSkeltion />}>
+            <AdminAuthLayout slug="/admin/users">
+              <Customer />
+            </AdminAuthLayout>
+          </Suspense>)
       },
       {
         path: "/admin/vendors",
@@ -287,7 +298,25 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/orders",
-        element: <OrderLists />
+        element:
+          (
+            <Suspense fallback={<DefaultSkeltion />}>
+              <AdminAuthLayout slug="/admin/orders">
+                <OrderLists />
+              </AdminAuthLayout>
+            </Suspense>)
+
+      },
+      {
+        path: "/admin/blog",
+        element:
+          (
+            <Suspense fallback={<DefaultSkeltion />}>
+              <AdminAuthLayout slug="/admin/blog">
+                <Blog />
+              </AdminAuthLayout>
+            </Suspense>)
+
       }
     ]
   },

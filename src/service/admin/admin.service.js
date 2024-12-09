@@ -153,3 +153,28 @@ export const assignProductService = async (productId, influncerId) => {
         return error;
     }
 }
+
+export const addNewBlogService = async (payload) => {
+    try {
+        const response = await postRequest({
+            url: getBaseDomain() + "blog/create",
+            headers: getHeaderConfig(getAdminToken()),
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const getBlogListsService = async () => {
+    try {
+        const response = await getRequest({
+            url: getBaseDomain() + "blog/lists",
+
+
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}

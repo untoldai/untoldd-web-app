@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import { getProductByCategory } from '../../service/product/product.service';
 import CardSkelton from '../../comoponent/skelton/CardSkeltion';
+import HomeBlog from '../../comoponent/specific/homepage/HomeBlogs';
 const Productcard = lazy(() => import('../../comoponent/shared/card/productcard'));
 const KidsWareHomepage = () => {
   const settings = {
@@ -121,6 +122,7 @@ const KidsWareHomepage = () => {
 
 
       </div>
+      <HomeBlog />
     </div>
   )
 }
@@ -282,4 +284,6 @@ const WhyUntoldd = () => {
     </div>
   )
 }
+
+
 export default KidsWareHomepage
