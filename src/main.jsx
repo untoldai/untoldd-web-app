@@ -54,6 +54,7 @@ import InfluencerHome from './pages/influnencer/InfluncerHome.jsx';
 import InfluncerProfile from './pages/influnencer/InfluncerProfile.jsx';
 import InfluncerAuthLayout from './comoponent/authenticate/InfluncerAuthLayout.jsx';
 import MyProduct from './pages/influnencer/MyProduct.jsx';
+import ExplorePage from './pages/kidsware/Explorepages.jsx';
 const Blog = lazy(() => import('./pages/admin/Blog.jsx'));
 const BlogListPage=lazy(()=>import('./pages/kidsware/WebsiteBlog.jsx'));
 
@@ -212,6 +213,10 @@ const router = createBrowserRouter([
       {
         path: "/app/blogs",
         element: <BlogListPage />
+      },
+      {
+        path:"/app/explore",
+        element:<ExplorePage />
       }
     ]
   },
@@ -328,8 +333,8 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <RouterProvider router={router} />
       <ToastContainer
-        position="top-right" // You can change this to any position
-        autoClose={3000} // Auto close after 5 seconds
+        position="top-right" 
+        autoClose={3000} 
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

@@ -176,7 +176,7 @@ const KidsWearAllProducts = () => {
                     } transition-all duration-300`}
             >
                 <div className="flex justify-between items-center mb-4 md:hidden">
-                    <h2 className="text-xl font-semibold text-gray-800">Hotels</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Products</h2>
                     <button
                         className="text-gray-700 hover:text-gray-900 focus:outline-none"
                         onClick={toggleFilter}

@@ -105,8 +105,9 @@ const BeautyAboutUs = () => {
   <h3 className="text-center text-4xl font-extrabold text-gray-900 my-6">Our Story</h3>
 
   <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">
-    <span className="font-bold text-gray-800">Selina Gomez</span>, CEO at Webecy Digital  
-    Untoldd was born out of a passion for entrepreneurship and a desire to change the way brands are created. As a team of digital marketing enthusiasts and e-commerce experts, we noticed a growing trend: influencers wanted to do more than just promote products—they wanted to create their own. However, the process of launching a brand was often complex, costly, and time-consuming, especially for those without a background in business.
+    Untoldd is built for creators who dream of turning their influence into meaningful brands. We simplify the brand-building journey by managing everything—product design, manufacturing, packaging, logistics, payments, and sales. Our mission is to empower influencers to focus on their craft while we handle the complexities behind the scenes.  
+
+From launching unique products to creating impactful brands, we are dedicated to helping influencers connect with their audience in innovative ways. At Untoldd, we believe in fostering creativity, providing seamless support, and building a future where every creator can see their ideas come to life as a successful brand.
   </p>
 
   <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">

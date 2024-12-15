@@ -182,22 +182,22 @@ export const footerItem = [
       {
         id: 0,
         name: "INSTAGRAM",
-        slug: "#",
+        slug: "https://www.instagram.com/untoldd_india?igsh=aDRla3kzODY0MmJp",
       },
       {
         id: 1,
         name: "FACEBOOK",
-        slug: "#",
+        slug: "https://www.facebook.com/share/15P2bqc4nZ/",
       },
       {
         id: 2,
         name: "TWITTER",
-        slug: "#",
+        slug: "https://x.com/Untoldd_India",
       },
       {
         id: 3,
         name: "LINKEDIN",
-        slug: "#",
+        slug: "https://www.linkedin.com/company/untolddbysavariyainternational/",
       },
     ]
   },
@@ -208,7 +208,7 @@ export const footerItem = [
       {
         id: 0,
         name: "Signup",
-        slug: "influncer/signup",
+        slug: "/influncer/signup",
       },
       {
         id: 1,
@@ -225,6 +225,11 @@ export const kidsWearNavItems = [
     id: 0,
     title: "Home",
     slug: "/app"
+  },
+  {
+    id: 6,
+    title: "Explore",
+    slug: "/app/explore"
   },
   {
     id: 1,
