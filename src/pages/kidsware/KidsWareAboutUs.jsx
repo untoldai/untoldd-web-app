@@ -17,7 +17,7 @@ const BeautyAboutUs = () => {
 
         </div>
         <div className='max-w-xl'>
-          <h3 className='text-3xl font-bold '>Untoldd to be told</h3>
+          <h3 className='text-3xl font-bold '></h3>
           <p className="text-slate-600 text-lg my-4 max-w-3xl font-medium tracking-wide leading-relaxed">Untoldd to be toldd
              At Untoldd, our mission is to empower creators by transforming their unique visions into thriving, sustainable brands. We believe that every creator has an untold story, a brand waiting to be born. Our goal is to make brand creation accessible, seamless, and impactful by providing end-to-end support—from manufacturing and packaging to marketing and distribution.
             We are committed to redefining the traditional model of brand building by partnering with influencers, giving them the tools and resources they need to succeed. We aim to democratize entrepreneurship, allowing creators to turn their passions into profitable businesses, and bring innovative, high-quality products to consumers worldwide.
@@ -97,7 +97,8 @@ const BeautyAboutUs = () => {
 
 
             <p className='text-xl font-bold '>Support</p>
-            <span>We are committed to redefining the traditional model of brand building by partnering with influencers, giving them the tools and resources they need to succeed.</span>
+            <span>
+            We are dedicated to transforming the conventional approach to brand development by collaborating with influencers, providing them with the support and resources essential for their growth and success.</span>
           </div>
         </div>
       </section>

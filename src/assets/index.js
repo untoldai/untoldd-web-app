@@ -28,6 +28,9 @@ import BelugaChild from "./belugachild.png";
 import BelugaTshirt from "./belugatshirt.png";
 import Contactus from "./contactus.png";
 import SimplicBanner from "./SimplicBanner.jpeg"
+import Banner2 from "./Banner2.jpg";
+import Banner3 from "./Banner3.jpg";
+import Banner4 from "./Banner4.jpg";
 export {
     UntloddLogo,
     SphereObject,
@@ -58,5 +61,8 @@ export {
     BelugaTshirt,
     Contactus,
     SimplicBanner,
-    LogoFinal
+    LogoFinal,
+    Banner2,
+    Banner3,
+    Banner4
 }
