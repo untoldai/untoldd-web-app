@@ -7,6 +7,7 @@ import CardSkelton from '../../skelton/CardSkeltion';
 const Productcard = ({ product, isLoading }) => {
     const navigate = useNavigate();
     const [isAdded, setIsAdded] = useState(false); // Track if the product is added
+    const [mainImage, setMainImage] = useState(product?.images[0]?.url);
 
     const handleAddToCart = () => {
         // Retrieve existing cart from local storage or initialize an empty array
@@ -45,47 +46,73 @@ const Productcard = ({ product, isLoading }) => {
                 isLoading ?
                     <CardSkelton />
                     :
-                    <div className='bg-white shadow-xl p-6 rounded-lg w-full hover:bg-slate-100 cursor-pointer' key={product._id}>
+                    <div
+                    className="group cursor-pointer bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    key={product._id}
+                    onClick={() => navigate(`/app/product-details?id=${product?._id}`)}
+                >
+                    {/* Image Section */}
+                    <div className="relative w-full h-[240px] rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                         <img
-                            src={product?.images[0].url}
+                            src={mainImage}
+                            alt={product?.name}
+                            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                             style={{ mixBlendMode: 'multiply' }}
-                            alt='Cool T-shirt'
-                            className='w-full h-[200px]'
                             onClick={() => navigate(`/app/product-details?id=${product?._id}`)}
                         />
-                        <div className='mt-2'>
-                            <p className='text-xl font-medium'>{product?.name}</p>
-                            <p className='text-gray-600 mb-2'>{product?.description?.substring(0, 10)}</p>
-                            <div className='flex justify-between items-center'>
-                                <div className='flex items-center'>
-                                    <Rating
-                                        readonly
-                                        initialRating={5}
-                                        fullSymbol={<FaStar className='text-orange-600' />}
-                                    />
-                                </div>
-                                <p className='text-2xl text-black flex items-center'>
-                                    <FaRupeeSign className='text-black' /> {product?.price}
-                                </p>
-                            </div>
-                        </div>
-                        <div className='flex justify-between gap-2'>
-                            <button
-                                onClick={() => navigate(`/app/product-details?id=${product?._id}`)}
-                                className='mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-2 rounded-md font-bold hover:bg-orange-500 transition duration-300'
-                            >
-                                <FaEye className='text-xl' /> View
-                            </button>
-                            {/* <button
-                                onClick={handleAddToCart}
-                                className={`mt-4 flex items-center justify-center gap-2 w-full py-2 rounded-md font-bold transition duration-300 ${isAdded ? 'bg-green-500 text-white' : 'border-2 text-black'} ${isAdded ? 'hover:bg-green-600' : 'hover:bg-gray-100'}`}
-                                disabled={isAdded} // Disable the button if the product is added
-                            >
-                                <FaShoppingCart />
-                                {isAdded ? ' Added' : ' Add to Cart'}
-                            </button> */}
+                    </div>
+        
+                    {/* Thumbnails */}
+                    <div className="flex gap-2 mt-3 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                        {product?.images.map((img, idx) => (
+                            <img
+                                key={idx}
+                                src={img.url}
+                                alt={`Thumb ${idx}`}
+                                className={`w-12 h-12 rounded-lg border ${
+                                    mainImage === img.url
+                                        ? 'border-orange-500 scale-105'
+                                        : 'border-gray-300'
+                                } object-cover cursor-pointer transition-all duration-200 hover:scale-110`}
+                                onClick={() => setMainImage(img.url)}
+                            />
+                        ))}
+                    </div>
+        
+                    {/* Text Content */}
+                    <div className="mt-4">
+                        <h3 className="text-xl font-semibold text-gray-800 truncate">
+                            {product?.name}
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+                            {product?.description || 'No description available'}
+                        </p>
+        
+                        <div className="flex justify-between items-center">
+                            <Rating
+                                readonly
+                                initialRating={5}
+                                fullSymbol={<FaStar className="text-orange-400 text-sm" />}
+                                emptySymbol={<FaStar className="text-gray-300 text-sm" />}
+                            />
+                            <span className="text-lg font-bold text-gray-900 flex items-center gap-1">
+                                <FaRupeeSign className="text-base" />
+                                {product?.price}
+                            </span>
                         </div>
                     </div>
+        
+                    {/* Action Button */}
+                    <div className="mt-5 flex justify-end">
+                        <button
+                            onClick={() => navigate(`/app/product-details?id=${product?._id}`)}
+                            className="text-gray-700 hover:text-orange-500 transition text-xl"
+                            title="View Product"
+                        >
+                            <FaEye />
+                        </button>
+                    </div>
+                </div>
             }
         </>
     );
