@@ -3,7 +3,7 @@ const production = "https://untoldd-web-backend.vercel.app/v1/api/"; // Example 
 
 export function getBaseDomain() {
     let baseDomain;
-    switch ('local') {
+    switch ('dev') {
         case 'dev':
             baseDomain = local;
             break;
