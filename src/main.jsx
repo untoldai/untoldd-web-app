@@ -109,7 +109,7 @@ const router = createBrowserRouter([
     element: <ForgotPassword />
   },
   {
-    path: "/auth/create-password",
+    path: "/auth/reset-password/:id",
     element: <CreatePassword />
   },
   // kids ware routing

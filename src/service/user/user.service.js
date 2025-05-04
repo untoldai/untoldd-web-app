@@ -136,7 +136,7 @@ export const getOrderListService = async () => {
     }
 }
 // get order details service 
-export const getOrderDetailsService =async (orderId) => {
+export const getOrderDetailsService = async (orderId) => {
     try {
         const response = await getRequest({
             url: getBaseDomain() + `order/users/order-details?orderId=${orderId}`,
@@ -167,6 +167,43 @@ export const verifyPaymentPaymentService = async (payload) => {
         const response = await postRequest({
             url: getBaseDomain() + "payment/verify",
             headers: getHeaderConfig(getUserToken()),
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const sendforgotPasswordOtpService = async (payload) => {
+    try {
+        let response = await postRequest({
+            url: getBaseDomain() + "mail/send/forgot-password",
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const verifyforgotPasswordOtpService = async (payload) => {
+    try {
+        let response = await postRequest({
+            url: getBaseDomain() + "mail/send/verify-otp",
+            data: payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
+export const passwordResetService = async (payload) => {
+    try {
+        let response = await postRequest({
+            url: getBaseDomain() + "auth/master/password-reset",
             data: payload
         });
         return response;

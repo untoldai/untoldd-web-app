@@ -5,9 +5,15 @@ import Button from '../../comoponent/specific/form/Button';
 import { UntloddLogo } from '../../assets';
 import { Link, useNavigate } from 'react-router-dom';
 import CenterPopDialog from '../../comoponent/Dialog/CenterPopDialog';
+import { errorToast, successToast } from '../../hooks/toast.hooks';
+import OrderLoader from '../../comoponent/Loader/OrderLoader';
+import PendualLoader from '../../comoponent/Loader/PendualLoader';
+import { sendforgotPasswordOtpService, verifyforgotPasswordOtpService } from '../../service/user/user.service';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false)
+    const [token, setToken] = useState(null);
     const inputs = useRef([]);
     const [loginForm, setLoginForm] = useState({
         email: '',
@@ -32,13 +38,65 @@ const ForgotPassword = () => {
             [name]: value
         }));
     }
+    async function handleSendotp() {
+        try {
+            if (loginForm.email === "") {
+                return errorToast('Email is required');
+            }
+            // regext to validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(loginForm.email)) {
+                return errorToast("Email is not valid");
+            }
+            setIsLoading(true);
+
+            let response = await sendforgotPasswordOtpService({ email: loginForm.email });
+            setIsLoading(false);
+            if (response.data !== null && response.data.statusCode === 200) {
+                setIsOtpSent(true);
+                successToast(response.data.message);
+                setToken(response.data.data);
+            } else {
+                errorToast(response?.message || response.error.message)
+            }
+
+
+
+        } catch (error) {
+            setIsLoading(false);
+            console.log('Something went wrong while sending otp', error);
+        }
+    }
+    async function handlVerifyOtp() {
+        const otp = inputs.current.map(input => input?.value).join('');
+
+        // Basic validation
+        if (otp.length !== 4 || !/^\d{4}$/.test(otp)) {
+            errorToast("Please enter a valid 4-digit OTP.");
+            return;
+        }
+        try {
+
+            const response = await verifyforgotPasswordOtpService({ otp: otp, token: token });
+            if (response.data !== null && response.data.statusCode === 200) {
+                successToast(response.data.message);
+                navigate('/auth/reset-password/'+response.data.data);
+            } else {
+                errorToast(response.error.message)
+            }
+
+        } catch (error) {
+            setIsLoading(false);
+            console.log('something went while verify otp ', error)
+        }
+    }
     return (
         <div className='w-full flex justify-center p-4 sm:p-0 items-center h-full'>
-
-            <CenterPopDialog visible={isOtpSent} className={"flex flex-col justify-center items-center gap-5 "}>
+            {isLoading && <PendualLoader />}
+            <CenterPopDialog visible={isOtpSent} className={"flex flex-col w-full md:w-1/2 justify-center items-center gap-5 "} onClose={() => setIsOtpSent(false)}>
                 <p className='text-2xl font-semibold '>Your Otp Sent on your register email email****@gmail.com</p>
 
-                <div className='flex items-center gap-2 '>
+                <div className='flex items-center gap-2 w-10/12  md:w-1/2'>
                     {
                         [0, 1, 2, 3].map((_, index) => (
                             <input key={index}
@@ -48,7 +106,7 @@ const ForgotPassword = () => {
                         ))
                     }
                 </div>
-                <Button handlClick={() => setIsOtpSent(true)} text={"Verify"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
+                <Button handlClick={handlVerifyOtp} text={"Verify"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
 
             </CenterPopDialog>
             <ShadowCard className={'w-full h-full  md:h-[60vh] md:w-1/2 my-20 rounded-lg border-neutral-500'}>
@@ -69,7 +127,7 @@ const ForgotPassword = () => {
                             />
 
 
-                            <Button handlClick={() => setIsOtpSent(true)} text={"Send Otp"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
+                            <Button handlClick={handleSendotp} text={"Send Otp"} className={'py-2 hover:bg-transparent hover:border border-neutral-500 hover:text-black text-2xl my-1 hover:scale-105 duration-500 transition-transform'} />
                             <span className='text-center text-xl text-neutral-500'>Or</span>
                             <Link to={"/"} className='text-center text-xl font-semibold text-blue-700'>Go To Home</Link>
 
