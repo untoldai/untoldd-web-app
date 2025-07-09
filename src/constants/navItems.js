@@ -70,10 +70,10 @@ export const navItems = [
   },
   {
     id: 11,
-    slug: '/admin/promotions',
-    title: 'Promotions',
+    slug: '/admin/points-master',
+    title: 'Points Master',
     icon: FaTag,
-    roles: ['admin', 'vendor']
+    roles: ['admin']
   },
   {
     id: 12,
@@ -215,7 +215,7 @@ export const footerItem = [
         name: "Login",
         slug: "/influncer/login",
       },
-      
+
     ]
   }
 ]

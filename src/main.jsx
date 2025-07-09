@@ -55,6 +55,7 @@ import InfluncerProfile from './pages/influnencer/InfluncerProfile.jsx';
 import InfluncerAuthLayout from './comoponent/authenticate/InfluncerAuthLayout.jsx';
 import MyProduct from './pages/influnencer/MyProduct.jsx';
 import ExplorePage from './pages/kidsware/Explorepages.jsx';
+const PointMaster =lazy(()=>import('./pages/admin/PointMaster.jsx')) ;
 const Blog = lazy(() => import('./pages/admin/Blog.jsx'));
 const BlogListPage=lazy(()=>import('./pages/kidsware/WebsiteBlog.jsx'));
 
@@ -319,6 +320,17 @@ const router = createBrowserRouter([
             <Suspense fallback={<DefaultSkeltion />}>
               <AdminAuthLayout slug="/admin/blog">
                 <Blog />
+              </AdminAuthLayout>
+            </Suspense>)
+
+      },
+       {
+        path: "/admin/points-master",
+        element:
+          (
+            <Suspense fallback={<DefaultSkeltion />}>
+              <AdminAuthLayout slug="/admin/points-master">
+                <PointMaster />
               </AdminAuthLayout>
             </Suspense>)
 

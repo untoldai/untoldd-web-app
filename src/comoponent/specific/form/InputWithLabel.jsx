@@ -1,9 +1,9 @@
 import React from 'react'
 
-const InputWithLabel = ({ label, value, inputClassName, labelClass, name, divClassName, placeholder, handleChange, type = "text", ...props }) => {
+const InputWithLabel = ({ label, value, inputClassName, labelClass, name, divClassName, placeholder, handleChange, type = "text",required=false, ...props }) => {
     return (
         <div className={`${divClassName} flex flex-col gap-2 `}>
-            <label htmlFor="inputForm" className={`${labelClass} text-neutral-900 `}>{label}</label>
+            <label htmlFor="inputForm" className={`${labelClass} text-neutral-900 `}>{label} <span className='text-red-900 font-bold'>{required?"*":""}</span> </label>
             <input
                 type={type}
                 name={name}

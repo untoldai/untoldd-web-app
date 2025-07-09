@@ -178,3 +178,44 @@ export const getBlogListsService = async () => {
         return error;
     }
 }
+
+
+export const pointMasterAddService = async (payload) => {
+    try {
+        let response = await postRequest({
+            url: getBaseDomain() + "admin/point-master/create",
+            headers: getHeaderConfig(getAdminToken()),
+            data: payload
+        });
+        return response;
+
+    } catch (error) {
+        return error;
+    }
+}
+export const getPointMasterService = async () => {
+    try {
+
+        let response = await postRequest({
+            url: getBaseDomain() + "admin/point-master/lists",
+            headers: getHeaderConfig(getAdminToken()),
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const updatePointsStatusService = async (payload) => {
+    try {
+
+        let response = await postRequest({
+            url: getBaseDomain() + "admin/point-master/update/status",
+            headers: getHeaderConfig(getAdminToken()),
+            data:payload
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
